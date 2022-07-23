@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Rentals List</h1>
+
+{% for gear in gear_items %}
+    <p>Name: {{gear.name}}</p>
+    <p>Price: ${{gear.price}}</p>
+    <p>Quantity: {{gear.qty}}</p>
+{% endfor %}
+
+{% endblock %}

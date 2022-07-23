@@ -1,9 +1,13 @@
 from django.shortcuts import render
+from .models import Gear_item
 
-from django.http import HttpResponse
 
 def home(request):
-  return HttpResponse('<h1>Home</h1>')
+  return render(request, 'home.html')
 
 def about(request):
-  return HttpResponse('<h1>About</h1>')
+  return render(request, 'about.html')
+
+def rentals_index(request):
+    gear_items = Gear_item.objects.all()
+    return render(request, 'rentals/index.html', {'gear_items': gear_items})

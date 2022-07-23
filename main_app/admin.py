@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from main_app.models import Gear_item
+
+admin.site.register(Gear_item)
