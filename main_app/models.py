@@ -32,3 +32,5 @@ class Reservation(models.Model):
     end_date = models.DateField(("Return Date"), default=date.today)
     gear_item = models.ManyToManyField(Gear_item)
     # reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    def get_absolute_url(self):
+        return reverse('reservation_detail', kwargs={'pk': self.id})

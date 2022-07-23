@@ -5,12 +5,14 @@
 
 {% for reservation in reservation_list %}
 
+<a href="{% url 'reservation_detail' reservation.id %}">
     <p>Start: {{reservation.start_date}}</p>
+</a>
 <p>End: {{reservation.end_date}}</p>
-{% for gear_item in reservation.gear_item_set.all %}
+{% for gear_item in reservation.gear_item.all %}
 
-    <p>{{gear_item.name}}</p>
-    <p>{{gear_item.price}}</p>  
+<p>{{gear_item.name}}</p>
+<p>{{gear_item.price}}</p>
 {% endfor %}
 
 {% empty %}

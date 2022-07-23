@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Reservation Details</h1>
+
+    <p>Start: {{reservation.start_date}}</p>
+<p>End: {{reservation.end_date}}</p>
+
+{% if reservation.gear_item.count %}
+      {% for gear in reservation.gear_item.all %}
+        <p>{{gear.name}}</p>
+      {% endfor %}
+    {% else %}
+      <h5>No Gear</h5>
+    {% endif %}
+
+    {% comment %}
+<form action="{% url 'add_gear' reservation.id gear_item.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn">Add Gear</button>
+  </form>
+  {% endcomment %}
+
+
+{% endblock %}

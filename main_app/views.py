@@ -15,8 +15,8 @@ class Gear_itemCreate(CreateView):
 
 class ReservationCreate(CreateView):
     model = Reservation
-    fields = "__all__"
-    success_url = '/reservations'
+    fields = ["start_date", "end_date"]
+    # success_url = '/reservations'
 
 class ReservationDetail(DetailView):
     model = Reservation
@@ -43,3 +43,7 @@ def rentals_index(request):
 def gear_item_detail(request, gear_item_id):
     gear_item = Gear_item.objects.get(id=gear_item_id)
     return render(request, 'rentals/detail.html', {'gear_item': gear_item})
+
+def add_gear(request, reservation_id, gear_item_id):
+    gear
+    Reservation.objects.get(id=reservation_id).gear_item.add(gear_item_id)
