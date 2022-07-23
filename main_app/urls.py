@@ -14,4 +14,5 @@ urlpatterns = [
     path('reservations/new', views.ReservationCreate.as_view(), name='reservation_create'),
     path('reservations/<int:pk>', views.ReservationDetail.as_view(), name='reservation_detail'),
     path('reservations/<int:reservation_id>/add_gear/<int:gear_item_id>', views.add_gear, name='add_gear'),
+    path('reservations/<int:pk>/delete', views.ReservationDelete.as_view(), name='reservation_delete'),
 ]

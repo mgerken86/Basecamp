@@ -35,6 +35,10 @@ class Gear_itemDelete(DeleteView):
     model = Gear_item
     success_url = '/rentals/'
 
+class ReservationDelete(DeleteView):
+    model = Reservation
+    success_url = '/reservations/'
+
 
 def home(request):
   return render(request, 'home.html')

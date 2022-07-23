@@ -6,6 +6,8 @@
 <p>Start: {{reservation.start_date}}</p>
 <p>End: {{reservation.end_date}}</p>
 
+<a href="{% url 'reservation_delete' reservation.id %}">Cancel This Reservation</a>
+
 {% if reservation.gear_item.count %}
     <h3>Gear Reserved:</h3>
     {% for gear in reservation.gear_item.all %}
