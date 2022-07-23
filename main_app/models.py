@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Gear_item(models.Model):
@@ -9,6 +10,9 @@ class Gear_item(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'gear_item_id': self.id})
 
 # class Reservation_item(models.Model):
 #     start_date = models.DateField(),

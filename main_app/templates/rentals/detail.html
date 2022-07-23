@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Gear Details</h1>
+
+<p>{{gear_item.name}}</p>
+<p>{{gear_item.price}}</p>
+<p>{{gear_item.qty}}</p>
+<p>{{gear_item.desc}}</p>
+
+
+<a href="{% url 'gear_item_update' gear_item.id %}">Edit</a>
+<a href="{% url 'gear_item_delete' gear_item.id %}">Delete</a>
+
+
+
+{% endblock %}
