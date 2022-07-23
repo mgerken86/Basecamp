@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Gear_item, Reservation
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -52,5 +52,5 @@ def gear_item_detail(request, gear_item_id):
 
 
 def add_gear(request, reservation_id, gear_item_id):
-    gear
     Reservation.objects.get(id=reservation_id).gear_item.add(gear_item_id)
+    return redirect('reservation_detail', pk=reservation_id)

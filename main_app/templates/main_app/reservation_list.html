@@ -12,9 +12,10 @@
 {% for gear_item in reservation.gear_item.all %}
 
 <p>{{gear_item.name}}</p>
-<p>{{gear_item.price}}</p>
-{% endfor %}
 
+
+{% endfor %}
+<hr>
 {% empty %}
 <h1>You do not have any reservations</h1>
 {% endfor %}

@@ -6,10 +6,11 @@
 <p>Start: {{reservation.start_date}}</p>
 <p>End: {{reservation.end_date}}</p>
 
-{% if reservation.gear_item %}
+{% if reservation.gear_item.count %}
     <h3>Gear Reserved:</h3>
     {% for gear in reservation.gear_item.all %}
         <p>{{gear.name}}</p>
+        <p>{{gear.price}}</p>
     {% endfor %}
 {% else %}
     <h5>No Gear</h5>
@@ -19,15 +20,16 @@
 <h2>Choose an Item to Add:</h2>
 {% for gear in gear_items %}
     <p>{{gear.name}}</p>
+    <form action="{% url 'add_gear' reservation.id gear.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn">Add {{gear.name}}</button>
+    </form>
 {% endfor %}
 
 
-{% comment %}
-<form action="{% url 'add_gear' reservation.id gear_item.id %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn">Add Gear</button>
-</form>
-{% endcomment %}
+
+
+
 
 
 {% endblock %}
