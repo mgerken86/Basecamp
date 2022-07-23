@@ -20,6 +20,12 @@ class ReservationCreate(CreateView):
 
 class ReservationDetail(DetailView):
     model = Reservation
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReservationDetail, self).get_context_data(**kwargs)
+        context['gear_items'] = Gear_item.objects.all()
+        return context
+
 
 class Gear_itemUpdate(UpdateView):
     model = Gear_item
@@ -43,6 +49,7 @@ def rentals_index(request):
 def gear_item_detail(request, gear_item_id):
     gear_item = Gear_item.objects.get(id=gear_item_id)
     return render(request, 'rentals/detail.html', {'gear_item': gear_item})
+
 
 def add_gear(request, reservation_id, gear_item_id):
     gear
