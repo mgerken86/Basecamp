@@ -1,15 +1,25 @@
 from django.shortcuts import render
-from .models import Gear_item
-from django.views.generic.list import ListView
+from .models import Gear_item, Reservation
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 class GearList(ListView):
     model = Gear_item
-    # template_name = 'rentals/index.html'
+class ReservationsList(ListView):
+    model = Reservation
+
 
 class Gear_itemCreate(CreateView):
     model = Gear_item
     fields = ['name', 'price', 'qty', 'desc']
+
+class ReservationCreate(CreateView):
+    model = Reservation
+    fields = "__all__"
+    success_url = '/reservations'
+
+class ReservationDetail(DetailView):
+    model = Reservation
 
 class Gear_itemUpdate(UpdateView):
     model = Gear_item
@@ -28,7 +38,6 @@ def about(request):
 
 def rentals_index(request):
     gear_items = Gear_item.objects.all()
-    return render(request, 'rentals/index.html', {'gear_items': gear_items})
     return render(request, 'rentals/index.html', {'gear_items': gear_items})
 
 def gear_item_detail(request, gear_item_id):

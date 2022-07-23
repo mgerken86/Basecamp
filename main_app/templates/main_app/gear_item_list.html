@@ -4,7 +4,7 @@
 <h1>Rentals List</h1>
 <h2><a href="{% url 'gear_item_create' %}">Add New Gear</a></h2>
 
-{% for gear in gear_items %}
+{% for gear in gear_item_list %}
 <a href="{% url 'detail' gear.id %}">
     <p>Name: {{gear.name}}</p>
 </a>

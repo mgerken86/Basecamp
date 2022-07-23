@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Reservations List</h1>
+
+{% for reservation in reservation_list %}
+
+    <p>Start: {{reservation.start_date}}</p>
+<p>End: {{reservation.end_date}}</p>
+{% for gear_item in reservation.gear_item_set.all %}
+
+    <p>{{gear_item.name}}</p>
+    <p>{{gear_item.price}}</p>  
+{% endfor %}
+
+{% empty %}
+<h1>You do not have any reservations</h1>
+{% endfor %}
+
+{% endblock %}
