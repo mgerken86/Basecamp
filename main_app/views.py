@@ -31,8 +31,8 @@ def fetchApi(list):
 
 
 
-class GearList(ListView):
-    model = Gear_item
+# class GearList(ListView):
+#     model = Gear_item
 class ReservationsList(ListView):
     model = Reservation
 
@@ -79,16 +79,19 @@ def about(request):
   return render(request, 'about.html')
 
 def rentals_index(request):
+    forecast_list = []
+    fetchApi(forecast_list)
     gear_items = Gear_item.objects.all()
-    return render(request, 'rentals/index.html', {'gear_items': gear_items})
+    return render(request, 'rentals/index.html', {
+        'gear_items': gear_items,
+        'forecast_list': forecast_list
+        })
 
 def gear_item_detail(request, gear_item_id):
     gear_item = Gear_item.objects.get(id=gear_item_id)
     return render(request, 'rentals/detail.html', {'gear_item': gear_item})
 
 def reservation_detail(request, reservation_id):
-    forecast_list = []
-    fetchApi(forecast_list)
     reservation = Reservation.objects.get(id=reservation_id)
     gear_items = Gear_item.objects.all()
     reservation_form = ReservationForm()
@@ -96,14 +99,23 @@ def reservation_detail(request, reservation_id):
         'reservation': reservation,
         'gear_items': gear_items,
         'reservation_form': reservation_form,
-        'forecast_list': forecast_list
     })
 
 
 def add_gear(request, reservation_id, gear_item_id):
     this_reservation = Reservation.objects.get(id=reservation_id)
     this_reservation.gear_item.add(gear_item_id)
+    return redirect('reservation_detail', reservation_id=reservation_id)
+
+def remove_gear(request, reservation_id, gear_item_id):
+    this_reservation = Reservation.objects.get(id=reservation_id)
+    this_reservation.gear_item.remove(gear_item_id)
+    return redirect('reservation_detail', reservation_id=reservation_id)
+
+def add_quantity(request, reservation_id):
+    this_reservation = Reservation.objects.get(id=reservation_id)
     this_reservation.qty += 1
+    print(this_reservation.qty)
     return redirect('reservation_detail', reservation_id=reservation_id)
 
 

@@ -12,9 +12,17 @@
     {% for gear in reservation.gear_item.all %}
         <p>{{gear.name}}</p>
         <p>Price: {{gear.price}}</p>
-        <p>Quantity: {{reservation.qty}}</p>
+        <p>Quantity: {{reservation.qty}}
+            <form action="{% url 'add_quantity' reservation.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn">+</button>
+            </form>
+        </p>
         <p>Total Price: {% widthratio gear.price 1 reservation.qty %}</p>
-
+        <form action="{% url 'remove_gear' reservation.id gear.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn">Remove {{gear.name}}</button>
+        </form>
         <hr>
     {% endfor %}
 {% else %}
@@ -25,18 +33,6 @@
 
 <a href="{% url 'reservation_delete' reservation.id %}">Cancel This Reservation</a>
 <a href="{% url 'reservation_update' reservation.id %}">Edit This Reservation</a>
-
-
-<h2>Need help deciding if you should rent some gear over the next three days?</h2>
-<h3>Here's the weather forecast to help you out!</h3>
-{% for day in forecast_list %}
-    <h5>{{day.date}}</h5>
-    <p>overall conditions: {{day.day.condition.text}}</p>
-    <p>min temp: {{day.day.maxtemp_f}}</p>
-    <p>min temp: {{day.day.mintemp_f}}</p>
-    <p>chance of rain: {{day.day.daily_chance_of_rain}}</p>
-    <hr>
-    {%endfor%}
 
 
 <h2>Choose an Item to Add:</h2>

@@ -11,6 +11,18 @@ body {
     margin: 1em;
 }
 
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+.evenly {
+    justify-content: space-evenly;
+}
+
 .nav-link {
     display: flex;
     align-items: center;

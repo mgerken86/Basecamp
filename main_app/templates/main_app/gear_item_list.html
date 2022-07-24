@@ -4,6 +4,20 @@
 <h1>Rentals List</h1>
 <h2><a href="{% url 'gear_item_create' %}">Add New Gear</a></h2>
 
+
+<h2>Need help deciding if you should rent some gear over the next three days?</h2>
+<h3>Here's the weather forecast to help you out!</h3>
+{% for day in forecast_list %}
+<div class="flex-col">
+    <h5>{{day.date}}</h5>
+    <p>overall conditions: {{day.day.condition.text}}</p>
+    <p>min temp: {{day.day.maxtemp_f}}</p>
+    <p>min temp: {{day.day.mintemp_f}}</p>
+    <p>chance of rain: {{day.day.daily_chance_of_rain}}</p>
+    <hr>
+</div>
+    {%endfor%}
+
 {% for gear in gear_item_list %}
 <a href="{% url 'detail' gear.id %}">
     <p>Name: {{gear.name}}</p>
