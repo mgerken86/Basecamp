@@ -115,7 +115,13 @@ def remove_gear(request, reservation_id, gear_item_id):
 def add_quantity(request, reservation_id):
     this_reservation = Reservation.objects.get(id=reservation_id)
     this_reservation.qty += 1
-    print(this_reservation.qty)
+    this_reservation.save()
+    return redirect('reservation_detail', reservation_id=reservation_id)
+
+def remove_quantity(request, reservation_id):
+    this_reservation = Reservation.objects.get(id=reservation_id)
+    this_reservation.qty -= 1
+    this_reservation.save()
     return redirect('reservation_detail', reservation_id=reservation_id)
 
 
