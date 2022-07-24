@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from main_app.views import GearList, ReservationsList, ReservationDetail
+from main_app.views import GearList, ReservationsList
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -12,7 +12,8 @@ urlpatterns = [
     path('rentals/<int:pk>/delete', views.Gear_itemDelete.as_view(), name='gear_item_delete'),
     path('reservations/', ReservationsList.as_view(), name='reservations_index'),
     path('reservations/new', views.ReservationCreate.as_view(), name='reservation_create'),
-    path('reservations/<int:pk>', views.ReservationDetail.as_view(), name='reservation_detail'),
+    path('reservations/<int:reservation_id>', views.reservation_detail, name='reservation_detail'),
+    path('reservations/<int:pk>/update', views.ReservationUpdate.as_view(), name='reservation_update'),
     path('reservations/<int:reservation_id>/add_gear/<int:gear_item_id>', views.add_gear, name='add_gear'),
     path('reservations/<int:pk>/delete', views.ReservationDelete.as_view(), name='reservation_delete'),
 ]

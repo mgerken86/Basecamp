@@ -30,7 +30,11 @@ class Gear_item(models.Model):
 class Reservation(models.Model):
     start_date = models.DateField(("Start Date"), default=date.today)
     end_date = models.DateField(("Return Date"), default=date.today)
-    gear_item = models.ManyToManyField(Gear_item)
+    gear_item = models.OneToOneField(Gear_item, on_delete=models.CASCADE)
+    qty = models.SmallIntegerField(default=1)
     # reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    def total_price(self):
+        return self.qty * self.gear_item.price
+
     def get_absolute_url(self):
-        return reverse('reservation_detail', kwargs={'pk': self.id})
+        return reverse('reservation_detail', kwargs={'reservation_id': self.id})

@@ -13,8 +13,15 @@
   <header class="navbar-fixed">
     <nav>
       <div class="nav-link">
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
+        <a href="{% url 'home' %}">
+            <img 
+            id="logoImg"
+            src="{% static 'images/A-Lodge_logo.png'%}" 
+            alt="logo"
+            >
+        </a>
+        <ul class="nav-list">
+            
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'index' %}">Rentals</a></li>
           <li><a href="{% url 'reservations_index' %}">Reservations</a></li>
@@ -22,7 +29,7 @@
       </div>
     </nav>
   </header>
-  <main class="main-ontainer">
+  <main class="main-container">
     {% block content %}
     {% endblock %}
   </main>
