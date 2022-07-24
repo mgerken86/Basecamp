@@ -3,10 +3,36 @@ from .models import Gear_item, Reservation
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import ReservationForm
+import requests
+import json
 
 
-class GearList(ListView):
-    model = Gear_item
+
+def fetchApi(list):
+
+    url = "https://weatherapi-com.p.rapidapi.com/forecast.json"
+
+    querystring = {"q":"Boulder","days":"3"}
+
+    headers = {
+        "X-RapidAPI-Key": "b706fa8596msha33725def79a97cp1b9fc1jsn8dfd397c7442",
+        "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    data = response.text
+    parse_jason = json.loads(data)
+    forecast = parse_jason['forecast']['forecastday']
+
+    for day in forecast:
+        list.append(day)
+
+
+
+
+# class GearList(ListView):
+#     model = Gear_item
 class ReservationsList(ListView):
     model = Reservation
 
@@ -53,8 +79,13 @@ def about(request):
   return render(request, 'about.html')
 
 def rentals_index(request):
+    forecast_list = []
+    fetchApi(forecast_list)
     gear_items = Gear_item.objects.all()
-    return render(request, 'rentals/index.html', {'gear_items': gear_items})
+    return render(request, 'rentals/index.html', {
+        'gear_items': gear_items,
+        'forecast_list': forecast_list
+        })
 
 def gear_item_detail(request, gear_item_id):
     gear_item = Gear_item.objects.get(id=gear_item_id)
@@ -67,11 +98,25 @@ def reservation_detail(request, reservation_id):
     return render(request, 'reservations/reservation_detail.html', {
         'reservation': reservation,
         'gear_items': gear_items,
-        'reservation_form': reservation_form
+        'reservation_form': reservation_form,
     })
 
 
 def add_gear(request, reservation_id, gear_item_id):
-    Reservation.objects.get(id=reservation_id).gear_item.add(gear_item_id)
+    this_reservation = Reservation.objects.get(id=reservation_id)
+    this_reservation.gear_item.add(gear_item_id)
     return redirect('reservation_detail', reservation_id=reservation_id)
+
+def remove_gear(request, reservation_id, gear_item_id):
+    this_reservation = Reservation.objects.get(id=reservation_id)
+    this_reservation.gear_item.remove(gear_item_id)
+    return redirect('reservation_detail', reservation_id=reservation_id)
+
+def add_quantity(request, reservation_id):
+    this_reservation = Reservation.objects.get(id=reservation_id)
+    this_reservation.qty += 1
+    print(this_reservation.qty)
+    return redirect('reservation_detail', reservation_id=reservation_id)
+
+
 
