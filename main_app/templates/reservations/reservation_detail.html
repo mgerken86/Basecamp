@@ -6,21 +6,30 @@
 <p>Start: {{reservation.start_date}}</p>
 <p>End: {{reservation.end_date}}</p>
 
+
+{% if reservation.gear_item.count %}
     <h3>Gear Reserved:</h3>
-        <p>{{reservation.gear_item.name}}</p>
-        <p>Price: {{reservation.gear_item.price}}</p>
+    {% for gear in reservation.gear_item.all %}
+        <p>{{gear.name}}</p>
+        <p>Price: {{gear.price}}</p>
         <p>Quantity: {{reservation.qty}}</p>
-        <p>Total Price: {{reservation.total_price}}</p>
+        <p>Total Price: {% widthratio gear.price 1 reservation.qty %}</p>
+
         <hr>
+    {% endfor %}
+{% else %}
+    <h5>No Gear Reserved Yet</h5>
+{% endif %}
+
 
 
 <a href="{% url 'reservation_delete' reservation.id %}">Cancel This Reservation</a>
-<!-- <a href="{% url 'reservation_edit' reservation.id %}">Edit This Reservation</a> -->
+<a href="{% url 'reservation_update' reservation.id %}">Edit This Reservation</a>
 
 
 
 
-{% comment %}
+
 <h2>Choose an Item to Add:</h2>
 {% for gear in gear_items %}
     <p>{{gear.name}}</p>
@@ -29,8 +38,6 @@
         <button type="submit" class="btn">Add {{gear.name}}</button>
     </form>
 {% endfor %}
-
-{% endcomment %}
 
 
 

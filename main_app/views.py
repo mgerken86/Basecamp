@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Gear_item, Reservation
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import ReservationForm
+
 
 class GearList(ListView):
     model = Gear_item
@@ -60,14 +62,16 @@ def gear_item_detail(request, gear_item_id):
 
 def reservation_detail(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
-    # gear_items = Gear_item.objects.all()
-
+    gear_items = Gear_item.objects.all()
+    reservation_form = ReservationForm()
     return render(request, 'reservations/reservation_detail.html', {
         'reservation': reservation,
-        # 'gear_items': gear_items
+        'gear_items': gear_items,
+        'reservation_form': reservation_form
     })
 
 
 def add_gear(request, reservation_id, gear_item_id):
     Reservation.objects.get(id=reservation_id).gear_item.add(gear_item_id)
     return redirect('reservation_detail', reservation_id=reservation_id)
+

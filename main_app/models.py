@@ -6,7 +6,7 @@ from datetime import date
 
 class Gear_item(models.Model):
     name = models.CharField(max_length=100)
-    price = models.DecimalField(decimal_places=2, max_digits=20, default=0.00)
+    price = models.IntegerField(default=0)
     qty = models.IntegerField()
     desc = models.TextField(max_length=300)
 
@@ -30,7 +30,7 @@ class Gear_item(models.Model):
 class Reservation(models.Model):
     start_date = models.DateField(("Start Date"), default=date.today)
     end_date = models.DateField(("Return Date"), default=date.today)
-    gear_item = models.OneToOneField(Gear_item, on_delete=models.CASCADE)
+    gear_item = models.ManyToManyField(Gear_item)
     qty = models.SmallIntegerField(default=1)
     # reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     def total_price(self):
