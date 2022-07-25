@@ -46,6 +46,8 @@ class ReservationCreate(CreateView):
     fields = ["start_date", "end_date", "gear_item", "qty"]
 
 
+
+
 # class ReservationDetail(DetailView):
 #     model = Reservation
     

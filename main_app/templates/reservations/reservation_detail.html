@@ -12,7 +12,8 @@
     {% for gear in reservation.gear_item.all %}
         <p>{{gear.name}}</p>
         <p>Price: {{gear.price}}</p>
-        <p>Quantity: {{reservation.qty}}
+        <div class="flex">
+        <p>Quantity: {{reservation.qty}} </p>
             <form action="{% url 'add_quantity' reservation.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn">+</button>
@@ -21,7 +22,8 @@
                 {% csrf_token %}
                 <button type="submit" class="btn">-</button>
             </form>
-        </p>
+       
+    </div>
         <p>Total Price: {% widthratio gear.price 1 reservation.qty %}</p>
         <form action="{% url 'remove_gear' reservation.id gear.id %}" method="POST">
             {% csrf_token %}
