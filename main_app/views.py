@@ -5,14 +5,16 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Gear_item, Reservation, Photo
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .forms import ReservationForm, UserRegistationForm
+from .forms import ReservationForm
 import requests
 import json
 import boto3
 import os
 import uuid
 
-
+def front(request):
+    context = { }
+    return render(request, "index.html", context)
 
 def fetchApi(list):
 
@@ -104,7 +106,8 @@ def gear_item_detail(request, gear_item_id):
     return render(request, 'rentals/detail.html', {'gear_item': gear_item})
 
 def reservation_detail(request, reservation_id):
-    reservation = Reservation.objects.get(user=request.user)
+    # reservation = Reservation.objects.get(user=request.user)
+    reservation = Reservation.objects.get(id=reservation_id)
     gear_items = Gear_item.objects.all()
     reservation_form = ReservationForm()
     return render(request, 'reservations/reservation_detail.html', {
@@ -167,15 +170,3 @@ def signup(request):
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
 
-def register(request):
-    if request.method == 'POST':
-        f = UserRegistationForm(request.POST)
-        if f.is_valid():
-            f.save()
-            messages.success(request, 'Account created successfully')
-            return redirect('/')
-
-    else:
-        f = CustomUserCreationForm()
-
-    return render(request, 'account/register.html', {'form': f})

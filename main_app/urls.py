@@ -3,7 +3,8 @@ from . import views
 from main_app.views import ReservationsList
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    # path('', views.home, name='home'),
+    path('', views.front, name='front'),
     path('about/', views.about, name='about'),
     path('rentals/', views.rentals_index, name='index'),
     path('rentals/<int:gear_item_id>', views.gear_item_detail, name='detail'),
