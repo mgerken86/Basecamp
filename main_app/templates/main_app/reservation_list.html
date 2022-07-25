@@ -5,8 +5,8 @@
 <h3><a href="{% url 'reservation_create' %}">Make a New Reservation</a></h3>
 
 {% for reservation in reservation_list %}
-
-<a href="{% url 'reservation_detail' reservation.id %}">
+<h4>{{reservation.user.first_name}}'s reservation</h4>
+<a href="{% url 'reservation_detail' reservation.id %}"
     <p>Start: {{reservation.start_date}}</p>
 </a>
 <p>End: {{reservation.end_date}}</p>

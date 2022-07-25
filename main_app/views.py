@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from .models import Gear_item, Reservation, Photo
 from django.views.generic import ListView, DetailView
@@ -103,7 +104,7 @@ def gear_item_detail(request, gear_item_id):
     return render(request, 'rentals/detail.html', {'gear_item': gear_item})
 
 def reservation_detail(request, reservation_id):
-    reservation = Reservation.objects.get(id=reservation_id)
+    reservation = Reservation.objects.get(user=request.user)
     gear_items = Gear_item.objects.all()
     reservation_form = ReservationForm()
     return render(request, 'reservations/reservation_detail.html', {
