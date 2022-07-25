@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Gear_item, Reservation, Photo
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .forms import ReservationForm
+from .forms import ReservationForm, UserRegistationForm
 import requests
 import json
 import boto3
@@ -166,3 +166,16 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+def register(request):
+    if request.method == 'POST':
+        f = UserRegistationForm(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.success(request, 'Account created successfully')
+            return redirect('/')
+
+    else:
+        f = CustomUserCreationForm()
+
+    return render(request, 'account/register.html', {'form': f})
