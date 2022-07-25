@@ -20,4 +20,5 @@ urlpatterns = [
     path('reservations/<int:reservation_id>/add_quantity/', views.add_quantity, name='add_quantity'),
     path('reservations/<int:reservation_id>/remove_quantity/', views.remove_quantity, name='remove_quantity'),
     path('reservations/<int:pk>/delete', views.ReservationDelete.as_view(), name='reservation_delete'),
+    path('accounts/signup/', views.signup, name='signup'),
 ]
