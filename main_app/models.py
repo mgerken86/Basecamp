@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -39,6 +40,7 @@ class Reservation(models.Model):
     end_date = models.DateField(("Return Date"), default=date.today)
     gear_item = models.ManyToManyField(Gear_item)
     qty = models.SmallIntegerField(default=1)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     # total_price = models.SmallIntegerField(default=0)
     # reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     def get_total_price(self):
