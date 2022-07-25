@@ -11,10 +11,28 @@ import json
 import boto3
 import os
 import uuid
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from . serializer import *
+# Create your views here.
+  
+class Gear_itemView(APIView):
+    
+    serializer_class = Gear_itemSerializer
+  
+    def get(self, request):
+        detail = [ {"name": detail.name,"desc": detail.desc} 
+        for detail in Gear_item.objects.all()]
+        return Response(detail)
+  
+    def post(self, request):
+  
+        serializer = Gear_itemSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
 
-def front(request):
-    context = { }
-    return render(request, "index.html", context)
+
 
 def fetchApi(list):
 
@@ -48,6 +66,8 @@ class ReservationsList(ListView):
 class Gear_itemCreate(CreateView):
     model = Gear_item
     fields = ['name', 'price', 'qty', 'desc']
+
+
 
 class ReservationCreate(CreateView):
     model = Reservation
@@ -110,11 +130,12 @@ def reservation_detail(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
     gear_items = Gear_item.objects.all()
     reservation_form = ReservationForm()
-    return render(request, 'reservations/reservation_detail.html', {
+    context = {
         'reservation': reservation,
         'gear_items': gear_items,
         'reservation_form': reservation_form,
-    })
+    }
+    return render(request, 'reservations/reservation_detail.html', context)
 
 
 def add_gear(request, reservation_id, gear_item_id):
