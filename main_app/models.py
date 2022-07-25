@@ -18,7 +18,7 @@ class Gear_item(models.Model):
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
-    gear_item = models.OneToOneField(Gear_item, on_delete=models.CASCADE, primary_key=True)
+    gear_item = models.ForeignKey(Gear_item, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Photo for gear_item_id: {self.gear_item_id} @{self.url}"
@@ -39,7 +39,7 @@ class Reservation(models.Model):
     end_date = models.DateField(("Return Date"), default=date.today)
     gear_item = models.ManyToManyField(Gear_item)
     qty = models.SmallIntegerField(default=1)
-    total_price = models.SmallIntegerField(default=0)
+    # total_price = models.SmallIntegerField(default=0)
     # reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     def get_total_price(self):
         total_price = 0

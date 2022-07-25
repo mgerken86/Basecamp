@@ -1,6 +1,9 @@
-
 from pathlib import Path
 
+
+import environ
+environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -62,7 +65,7 @@ WSGI_APPLICATION = 'basecamp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'basecamp',
+        'NAME': 'basecamp2',
     }
 }
 

@@ -23,10 +23,16 @@
 {% for gear in gear_items %}
 <a href="{% url 'detail' gear.id %}">
     <p>Name: {{gear.name}}</p>
+</div>
+
+{% for photo in gear.photo_set.all %}
+  <img src="{{photo.url}}">
+{% empty %}
+  <div>No Photos Uploaded</div>
+{% endfor %}
 </a>
-<p>Price: ${{gear.price}}</p>
-<p>Quantity: {{gear.qty}}</p>
-<hr>
+    <p>Price: ${{gear.price}}</p>
+    <p>Quantity: {{gear.qty}}</p>
 {% endfor %}
 
 {% endblock %}

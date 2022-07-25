@@ -8,7 +8,7 @@
 <h2>Need help deciding if you should rent some gear over the next three days?</h2>
 <h3>Here's the weather forecast to help you out!</h3>
 {% for day in forecast_list %}
-<div class="flex-col">
+
     <h5>{{day.date}}</h5>
     <p>overall conditions: {{day.day.condition.text}}</p>
     <p>min temp: {{day.day.maxtemp_f}}</p>
@@ -21,6 +21,13 @@
 {% for gear in gear_item_list %}
 <a href="{% url 'detail' gear.id %}">
     <p>Name: {{gear.name}}</p>
+</div>
+
+{% for photo in gear.photo_set.all %}
+  <img src="{{photo.url}}">
+{% empty %}
+  <div>No Photos Uploaded</div>
+{% endfor %}
 </a>
     <p>Price: ${{gear.price}}</p>
     <p>Quantity: {{gear.qty}}</p>
