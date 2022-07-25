@@ -7,7 +7,7 @@ from datetime import date
 class Gear_item(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField(default=0)
-    qty = models.IntegerField()
+    qty = models.IntegerField(default=0)
     desc = models.TextField(max_length=300)
 
     def __str__(self):
@@ -15,6 +15,13 @@ class Gear_item(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'gear_item_id': self.id})
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    gear_item = models.OneToOneField(Gear_item, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self):
+        return f"Photo for gear_item_id: {self.gear_item_id} @{self.url}"
     
 
 # class Reservation(models.Model):
@@ -42,4 +49,4 @@ class Reservation(models.Model):
     def get_absolute_url(self):
         return reverse('reservation_detail', kwargs={'reservation_id': self.id})
 
-    
+
