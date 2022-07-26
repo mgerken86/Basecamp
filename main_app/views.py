@@ -103,10 +103,10 @@ class ReservationIndex(APIView):
             return  Response(serializer.data)
 
 class Reservation_itemDetail(APIView):
-    def get_object(self, reservation_item_id, format=None):
-        return Reservation.objects.get(id=reservation_item_id)
+    def get_object(self, reservation_id, format=None):
+        return Reservation.objects.get(id=reservation_id)
 
-    def put(self, request, gear_item_id, format=None):
+    def put(self, request, reservation_id, format=None):
         gear_item = self.get_object(gear_item_id)
         serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -114,8 +114,10 @@ class Reservation_itemDetail(APIView):
             return Response(serializer.data)
         return Response('gear item was updated')
 
-    def delete(self, request, reservation_item_id, format=None):
-        reservation = self.get_object(reservation_item_id)
+    def delete(self, request, reservation_id, format=None):
+        print("THIS IS THE DELETE ID", reservation_id)
+        reservation = self.get_object(reservation_id)
+        print("THIS IS THE RESERVATION", reservation)
         reservation.delete()
         return Response('gear item is deleted')
 
