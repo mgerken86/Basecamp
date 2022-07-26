@@ -3,8 +3,9 @@ from . import views
 from main_app.views import ReservationsList, Gear_itemView
 
 urlpatterns = [
-    # path('', views.home, name='home'),
-    path('test/', Gear_itemView.as_view(), name='test'),
+    path('', views.home, name='home'),
+    path('rentals/', Gear_itemView.as_view(), name='get'),
+    path('rentals/<int:pk>', Gear_itemView.as_view(), name='put'),
     path('about/', views.about, name='about'),
     path('rentals/', views.rentals_index, name='index'),
     path('rentals/<int:gear_item_id>', views.gear_item_detail, name='detail'),

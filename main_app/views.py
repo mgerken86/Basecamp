@@ -21,7 +21,12 @@ class Gear_itemView(APIView):
     serializer_class = Gear_itemSerializer
   
     def get(self, request):
-        detail = [ {"name": detail.name,"desc": detail.desc} 
+        detail = [ {
+            "name": detail.name,
+            "desc": detail.desc,
+            "price": detail.price,
+            "qty": detail.qty
+            } 
         for detail in Gear_item.objects.all()]
         return Response(detail)
   
@@ -32,7 +37,13 @@ class Gear_itemView(APIView):
             serializer.save()
             return  Response(serializer.data)
 
-
+    def put(self, request, pk):
+        saved_gear_item = get_object_or_404(Gear_item.objects.all(), pk=pk)
+        data = request.data.get('gear_item')
+        serializer = Gear_itemSerializer(instance=saved_gear_item, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+        return Response(serializer.data)
 
 def fetchApi(list):
 
