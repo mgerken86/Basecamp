@@ -15,36 +15,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from . serializer import *
 # Create your views here.
-  
-class Gear_itemView(APIView):
-    
-    serializer_class = Gear_itemSerializer
-  
-    def get(self, request):
-        detail = [ {
-            "name": detail.name,
-            "desc": detail.desc,
-            "price": detail.price,
-            "qty": detail.qty
-            } 
-        for detail in Gear_item.objects.all()]
-        return Response(detail)
-  
-    def post(self, request):
-  
-        serializer = Gear_itemSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return  Response(serializer.data)
 
-    def put(self, request, pk):
-        saved_gear_item = get_object_or_404(Gear_item.objects.all(), pk=pk)
-        data = request.data.get('gear_item')
-        serializer = Gear_itemSerializer(instance=saved_gear_item, data=data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-        return Response(serializer.data)
 
+# API FETCH FOR WEATHER DATA ->
 def fetchApi(list):
 
     url = "https://weatherapi-com.p.rapidapi.com/forecast.json"
@@ -65,6 +38,67 @@ def fetchApi(list):
     for day in forecast:
         list.append(day)
 
+  
+class Gear_itemView(APIView):
+    
+    serializer_class = Gear_itemSerializer
+  
+    def get(self, request):
+        detail = [ {
+            "name": detail.name,
+            "desc": detail.desc,
+            "price": detail.price,
+            "qty": detail.qty
+            } 
+        for detail in Gear_item.objects.all()]
+        return Response(detail)
+  
+    def post(self, request):
+        serializer = Gear_itemSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
+
+    def put(self, request, gear_item_id, format=None):
+        gear_item = self.get_object(pk=pk)
+        serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        return Response('gear item was updated')
+
+    def delete(self, request, gear_item_id, format=None):
+        gear_item = self.get_object(gear_item_id)
+        gear_item.delete()
+        return Response('gear item is deleted')
+
+class ReservationView(APIView):
+    
+    serializer_class = ReservationSerializer
+  
+    def get(self, request):
+        detail = [ {
+            "name": detail.name,
+            "desc": detail.desc,
+            "price": detail.price,
+            "qty": detail.qty
+            } 
+        for detail in Reservation.objects.all()]
+        return Response(detail)
+  
+    def post(self, request):
+        serializer = ReservationSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
+
+    def put(self, request, pk):
+        saved_reservation = reservation.objects.get(pk=pk)
+        data = request.data.get('reservation')
+        serializer = ReservationSerializer(instance=saved_reservation, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+        return Response(serializer.data)
 
 
 
@@ -201,4 +235,6 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+
 
