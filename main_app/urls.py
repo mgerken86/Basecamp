@@ -15,6 +15,7 @@ urlpatterns = [
     path('rentals/<int:gear_item_id>/add_photo/', views.add_photo, name='add_photo'),
     path('reservations/', ReservationIndex.as_view(), name='reservations_index'),
     path('reservations/new', views.ReservationCreate.as_view(), name='reservation_create'),
+    # path('reservations/<int:reservation_id>', views.reservation_detail, name='reservation_detail'),
     path('reservations/<int:reservation_id>', views.reservation_detail, name='reservation_detail'),
     path('reservations/<int:pk>/update', views.ReservationUpdate.as_view(), name='reservation_update'),
     path('reservations/<int:reservation_id>/add_gear/<int:gear_item_id>', views.add_gear, name='add_gear'),

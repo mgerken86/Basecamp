@@ -85,20 +85,12 @@ class Gear_itemDetail(APIView):
         print("THIS IS THE ITEM: ", gear_item)
         gear_item.delete()
         return Response('gear item is deleted')
+
+
 class ReservationIndex(APIView):
     
     serializer_class = ReservationSerializer
-  
-    # def get(self, request):
-    #     detail = [ {
-    #         "id": detail.id,
-    #         "start_date": detail.start_date,
-    #         "end_date": detail.end_date,
-    #         "gear_item": detail.gear_item,
-    #         "qty": detail.qty
-    #         } 
-    #     for detail in Reservation.objects.all()]
-    #     return Response(detail)
+
     def get(self, request, format=None):
         reservations = Reservation.objects.all()
         serializer = ReservationSerializer(reservations, many=True)
@@ -110,13 +102,22 @@ class ReservationIndex(APIView):
             serializer.save()
             return  Response(serializer.data)
 
-    def put(self, request, pk):
-        saved_reservation = reservation.objects.get(pk=pk)
-        data = request.data.get('reservation')
-        serializer = ReservationSerializer(instance=saved_reservation, data=data, partial=True)
+class Reservation_itemDetail(APIView):
+    def get_object(self, reservation_item_id, format=None):
+        return Reservation.objects.get(id=reservation_item_id)
+
+    def put(self, request, gear_item_id, format=None):
+        gear_item = self.get_object(gear_item_id)
+        serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-        return Response(serializer.data)
+            return Response(serializer.data)
+        return Response('gear item was updated')
+
+    def delete(self, request, reservation_item_id, format=None):
+        reservation = self.get_object(reservation_item_id)
+        reservation.delete()
+        return Response('gear item is deleted')
 
 
 
