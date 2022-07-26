@@ -14,6 +14,7 @@ import uuid
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from . serializer import *
+from main_app import serializer
 # Create your views here.
 
 
@@ -39,7 +40,7 @@ def fetchApi(list):
         list.append(day)
 
   
-class Gear_itemView(APIView):
+class Gear_itemList(APIView):
     
     serializer_class = Gear_itemSerializer
   
@@ -59,6 +60,16 @@ class Gear_itemView(APIView):
             serializer.save()
             return  Response(serializer.data)
 
+
+class Gear_itemDetail(APIView):
+    def get_object(self, gear_item_id, format=None):
+        return Gear_item.objects.get(gear_item_id=gear_item_id)
+    
+    def get(self, request, gear_item_id, format=None):
+        gear_item = self.get_object(gear_item_id)
+        serializer = Gear_item(serializer)
+        return Response(serializer.data)
+
     def put(self, request, gear_item_id, format=None):
         gear_item = self.get_object(pk=pk)
         serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
@@ -71,7 +82,6 @@ class Gear_itemView(APIView):
         gear_item = self.get_object(gear_item_id)
         gear_item.delete()
         return Response('gear item is deleted')
-
 class ReservationView(APIView):
     
     serializer_class = ReservationSerializer
