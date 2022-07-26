@@ -20,6 +20,8 @@ class Gear_itemSerializer(serializers.ModelSerializer):
     #     return instance
 
 class ReservationSerializer(serializers.ModelSerializer):
+    gear_item = Gear_itemSerializer(read_only=True, many=True)
     class Meta:
         model = Reservation
+        fields = ("start_date", "end_date", "gear_item", "id")
         fields = "__all__"

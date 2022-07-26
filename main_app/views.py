@@ -89,16 +89,20 @@ class ReservationIndex(APIView):
     
     serializer_class = ReservationSerializer
   
-    def get(self, request):
-        detail = [ {
-            "id": detail.id,
-            "start_date": detail.start_date,
-            "end_date": detail.end_date,
-            "gear_item": detail.gear_item,
-            "qty": detail.qty
-            } 
-        for detail in Reservation.objects.all()]
-        return Response(detail)
+    # def get(self, request):
+    #     detail = [ {
+    #         "id": detail.id,
+    #         "start_date": detail.start_date,
+    #         "end_date": detail.end_date,
+    #         "gear_item": detail.gear_item,
+    #         "qty": detail.qty
+    #         } 
+    #     for detail in Reservation.objects.all()]
+    #     return Response(detail)
+    def get(self, request, format=None):
+        reservations = Reservation.objects.all()
+        serializer = ReservationSerializer(reservations, many=True)
+        return Response(serializer.data)
   
     def post(self, request):
         serializer = ReservationSerializer(data=request.data)
