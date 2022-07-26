@@ -68,7 +68,7 @@ class Gear_itemDetail(APIView):
     
     def get(self, request, gear_item_id, format=None):
         gear_item = self.get_object(gear_item_id)
-        serializer = Gear_item(serializer)
+        serializer = Gear_itemSerializer(gear_item)
         return Response(serializer.data)
 
     def put(self, request, gear_item_id, format=None):
@@ -105,6 +105,17 @@ class ReservationIndex(APIView):
 class Reservation_itemDetail(APIView):
     def get_object(self, reservation_id, format=None):
         return Reservation.objects.get(id=reservation_id)
+
+    def get(self, request, reservation_id, format=None):
+        print('IN THE VIEW')
+        reservation = self.get_object(reservation_id)
+        serializer = Reservation(serializer)
+        return Response(serializer.data)
+
+    def get(self, request, format=None):
+        reservations = Reservation.objects.all()
+        serializer = ReservationSerializer(reservations, many=True)
+        return Response(serializer.data)
 
     def put(self, request, reservation_id, format=None):
         gear_item = self.get_object(gear_item_id)
