@@ -80,9 +80,7 @@ class Gear_itemDetail(APIView):
         return Response('gear item was updated')
 
     def delete(self, request, gear_item_id, format=None):
-        print("THIS IS THE DELETE ID", gear_item_id)
         gear_item = self.get_object(gear_item_id)
-        print("THIS IS THE ITEM: ", gear_item)
         gear_item.delete()
         return Response('gear item is deleted')
 
@@ -109,17 +107,13 @@ class Reservation_itemDetail(APIView):
     def get(self, request, reservation_id, format=None):
         print('IN THE VIEW')
         reservation = self.get_object(reservation_id)
-        serializer = Reservation(serializer)
+        serializer = ReservationSerializer(reservation)
         return Response(serializer.data)
 
-    def get(self, request, format=None):
-        reservations = Reservation.objects.all()
-        serializer = ReservationSerializer(reservations, many=True)
-        return Response(serializer.data)
 
     def put(self, request, reservation_id, format=None):
-        gear_item = self.get_object(gear_item_id)
-        serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
+        reservation = self.get_object(reservation_id)
+        serializer = ReservationSerializer(reservation, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
