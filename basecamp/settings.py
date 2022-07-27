@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from datetime import timedelta
 
 
 import environ
@@ -21,6 +22,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework', 
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'main_app',
     'django.contrib.admin',
