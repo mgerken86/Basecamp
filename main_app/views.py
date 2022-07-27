@@ -1,3 +1,4 @@
+from functools import partial
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -95,7 +96,13 @@ class ReservationIndex(APIView):
         return Response(serializer.data)
   
     def post(self, request):
-        serializer = ReservationSerializer(data=request.data)
+        gear_item = request.data['gear_item']
+        print(gear_item)
+        # request.data['gear_item'] = Gear_item.objects.get(id = gear_item)
+        # print(request.data['gear_item'])
+        serializer = ReservationSerializer(data=request.data, partial=True)
+        print(serializer)
+
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return  Response(serializer.data)

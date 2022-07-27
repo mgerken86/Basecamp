@@ -6,22 +6,23 @@ class Gear_itemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gear_item
         fields = "__all__"
-    
-    # def create(self, validated_data):
-    #     return Gear_item.objects.create(**validated_data)
 
-    # def update(self, instance, validated_data):
-    #     instance.name = validated_data.get('name', instance.name)
-    #     instance.desc = validated_data.get('desc', instance.desc)
-    #     instance.price = validated_data.get('price', instance.price)
-    #     instance.qty = validated_data.get('qty', instance.qty)
-
-    #     instance.save()
-    #     return instance
 
 class ReservationSerializer(serializers.ModelSerializer):
-    gear_item = Gear_itemSerializer(many=True)
+    # gear_item = serializers.PrimaryKeyRelatedField(
+    #     many=True, 
+    #     queryset=Gear_item.objects.all(),
+    #     read_only=False
+    #     ),
+        
+    gear_item = Gear_itemSerializer(many=True, read_only=True)
+    # gear_item = serializers.RelatedField(many=True, read_only=True)
     class Meta:
         model = Reservation
-        fields = ("start_date", "end_date", "gear_item", "qty", "id")
-        # fields = "__all__"
+        # fields = ("start_date", "end_date", "gear_item", "qty", "user")
+        fields = "__all__"
+
+    # def create(self, validated_data):
+    #     gear_item_data = validated_data.pop('gear_item')
+    #     reservation = Reservation.objects.create(**validated_data)
+    #     return reservation

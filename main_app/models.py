@@ -38,7 +38,7 @@ class Photo(models.Model):
 class Reservation(models.Model):
     start_date = models.DateField(("Start Date"), default=date.today)
     end_date = models.DateField(("End Date"), default=date.today)
-    gear_item = models.ManyToManyField(Gear_item)
+    gear_item = models.ManyToManyField(Gear_item, related_name='gear_items')
     qty = models.SmallIntegerField(default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # total_price = models.SmallIntegerField(default=0)
