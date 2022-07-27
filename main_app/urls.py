@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    # path('', views.home, name='home'),
     path('rentals/', Gear_itemList.as_view()),
     path('rentals/<int:gear_item_id>', Gear_itemDetail.as_view()),
     path('about/', views.about, name='about'),

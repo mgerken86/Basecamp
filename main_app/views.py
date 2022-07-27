@@ -18,6 +18,7 @@ import boto3
 import os
 import uuid
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from . serializer import *
 from main_app import serializer
@@ -288,9 +289,9 @@ class RegisterView(generics.CreateAPIView):
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
-        '/api/token/',
-        '/api/register/',
-        '/api/token/refresh/'
+        '/token/',
+        '/register/',
+        '/token/refresh/'
     ]
     return Response(routes)
 
