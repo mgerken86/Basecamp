@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 from main_app.views import ReservationsList, Gear_itemList, Gear_itemDetail, ReservationIndex
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -24,4 +27,9 @@ urlpatterns = [
     path('reservations/<int:reservation_id>/remove_quantity/', views.remove_quantity, name='remove_quantity'),
     path('reservations/<int:pk>/delete', views.ReservationDelete.as_view(), name='reservation_delete'),
     path('accounts/signup/', views.signup, name='signup'),
+    path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', views.RegisterView.as_view(), name='auth_register'),
+    path('', views.getRoutes)
+
 ]
