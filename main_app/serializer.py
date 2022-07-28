@@ -36,6 +36,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     #     print("GEAR ITEM DATA: ", gear_item_data)
     #     reservation = Reservation.objects.create(**validated_data)
     #     return reservation
+    
     def create(self, validated_data):
         gear_items = validated_data.pop("gear_item_ids", None)
         # validated_data["user"] = self.context["request"].user
