@@ -145,8 +145,8 @@ class UserReservationIndex(APIView):
     
     serializer_class = UserSerializer
 
-    def get(self, request, format=None):
-        reservations = Reservation.objects.filter(user = self.request.user)
+    def get(self, request, user_id, format=None):
+        reservations = Reservation.objects.filter(user = user_id)
         serializer = ReservationSerializer(reservations, many=True)
         return Response(serializer.data)
 

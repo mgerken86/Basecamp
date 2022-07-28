@@ -20,7 +20,7 @@ urlpatterns = [
     path('reservations/new', views.ReservationCreate.as_view(), name='reservation_create'),
     # path('reservations/<int:reservation_id>', views.reservation_detail, name='reservation_detail'),
     path('reservations/<int:reservation_id>', views.Reservation_itemDetail.as_view(), name='reservation_detail'),
-    path('myaccount/', views.UserReservationIndex.as_view()),
+    path('myaccount/<int:user_id>', views.UserReservationIndex.as_view()),
     # path('reservations/<int:pk>/update', views.ReservationUpdate.as_view(), name='reservation_update'),
     # path('reservations/<int:reservation_id>/add_gear/<int:gear_item_id>', views.add_gear, name='add_gear'),
     # path('reservations/<int:reservation_id>/remove_gear/<int:gear_item_id>', views.remove_gear, name='remove_gear'),
