@@ -7,29 +7,43 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from . models import *
   
 class Gear_itemSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Gear_item
         fields = "__all__"
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    gear_item = serializers.PrimaryKeyRelatedField(
-        many=True, 
-        queryset=Gear_item.objects.all(),
-        read_only=False
-        ),
-        
-    # gear_item = Gear_itemSerializer(many=True, read_only=True)
+    # gear_item = serializers.PrimaryKeyRelatedField(
+    #     many=True, 
+    #     queryset=Gear_item.objects.all(),
+    #     read_only=False
+    #     ),
+
+    gear_item = Gear_itemSerializer(many=True, read_only=True)
+
+    gear_item_ids = serializers.PrimaryKeyRelatedField(
+        many=True, write_only=True, queryset=Gear_item.objects.all()
+    )
     # gear_item = serializers.RelatedField(many=True, read_only=True)
     class Meta:
         model = Reservation
-        # fields = ("start_date", "end_date", "gear_item", "qty", "user")
+        fields = ("start_date", "end_date", "gear_item", "qty", "user", "gear_item_ids")
         fields = "__all__"
 
     # def create(self, validated_data):
     #     gear_item_data = validated_data.pop('gear_item')
+    #     print("GEAR ITEM DATA: ", gear_item_data)
     #     reservation = Reservation.objects.create(**validated_data)
     #     return reservation
+    def create(self, validated_data):
+        gear_items = validated_data.pop("gear_item_ids", None)
+        # validated_data["user"] = self.context["request"].user
+        reservation = Reservation.objects.create(**validated_data)
+        if gear_items:
+            reservation.gear_item.set(gear_items)
+
+        return reservation 
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

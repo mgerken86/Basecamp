@@ -26,25 +26,25 @@ from main_app import serializer
 
 
 # API FETCH FOR WEATHER DATA ->
-def fetchApi(list):
+# def fetchApi(list):
 
-    url = "https://weatherapi-com.p.rapidapi.com/forecast.json"
+#     url = "https://weatherapi-com.p.rapidapi.com/forecast.json"
 
-    querystring = {"q":"Boulder","days":"3"}
+#     querystring = {"q":"Boulder","days":"3"}
 
-    headers = {
-        "X-RapidAPI-Key": "b706fa8596msha33725def79a97cp1b9fc1jsn8dfd397c7442",
-        "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"
-    }
+#     headers = {
+#         "X-RapidAPI-Key": "b706fa8596msha33725def79a97cp1b9fc1jsn8dfd397c7442",
+#         "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"
+#     }
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
+#     response = requests.request("GET", url, headers=headers, params=querystring)
 
-    data = response.text
-    parse_jason = json.loads(data)
-    forecast = parse_jason['forecast']['forecastday']
+#     data = response.text
+#     parse_jason = json.loads(data)
+#     forecast = parse_jason['forecast']['forecastday']
 
-    for day in forecast:
-        list.append(day)
+#     for day in forecast:
+#         list.append(day)
 
   
 class Gear_itemList(APIView):
@@ -102,10 +102,10 @@ class ReservationIndex(APIView):
         return Response(serializer.data)
   
     def post(self, request):
-        gear_item = request.data['gear_item']
-        print(gear_item)
-        request.data['gear_item'] = Gear_item.objects.get(id = gear_item)
-        print(request.data['gear_item'])
+        # gear_item = request.data['gear_item']
+        # print(gear_item)
+        # request.data['gear_item'] = Gear_item.objects.get(id = gear_item)
+        # print(request.data['gear_item'])
         serializer = ReservationSerializer(data=request.data, partial=True)
         print(serializer)
 
