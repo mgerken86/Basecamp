@@ -141,6 +141,18 @@ class Reservation_itemDetail(APIView):
 
 
 
+class UserReservationIndex(APIView):
+    
+    serializer_class = UserSerializer
+
+    def get(self, request, format=None):
+        reservations = Reservation.objects.filter(user = self.request.user)
+        serializer = ReservationSerializer(reservations, many=True)
+        return Response(serializer.data)
+
+
+
+
 # class GearList(ListView):
 #     model = Gear_item
 class ReservationsList(ListView):

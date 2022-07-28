@@ -36,7 +36,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     #     print("GEAR ITEM DATA: ", gear_item_data)
     #     reservation = Reservation.objects.create(**validated_data)
     #     return reservation
-    
+
     def create(self, validated_data):
         gear_items = validated_data.pop("gear_item_ids", None)
         # validated_data["user"] = self.context["request"].user
@@ -47,18 +47,21 @@ class ReservationSerializer(serializers.ModelSerializer):
         return reservation 
 
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        # Add custom claims
-        token['username'] = user.username
-        token['email'] = user.email
-        # ...
-        return token
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    reservations = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Reservation.objects.all()
+    )
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'reservations']
 
 
 # SERIALIZERS FOR AUTH
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
