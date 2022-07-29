@@ -102,10 +102,7 @@ class ReservationIndex(APIView):
         return Response(serializer.data)
   
     def post(self, request):
-        # gear_item = request.data['gear_item']
-        # print(gear_item)
-        # request.data['gear_item'] = Gear_item.objects.get(id = gear_item)
-        # print(request.data['gear_item'])
+
         serializer = ReservationSerializer(data=request.data, partial=True)
         print(serializer)
 
@@ -125,9 +122,10 @@ class Reservation_itemDetail(APIView):
 
 
     def put(self, request, reservation_id, format=None):
+        # print("SELF: ", self)
         reservation = self.get_object(reservation_id)
         serializer = ReservationSerializer(reservation, data=request.data)
-        print(request.data)
+        # print(request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
