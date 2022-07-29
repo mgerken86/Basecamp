@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 from main_app.views import ReservationsList, Gear_itemList, Gear_itemDetail, ReservationIndex, UserReservationIndex
 from rest_framework_simplejwt.views import (
@@ -34,4 +36,4 @@ urlpatterns = [
     path('', views.getRoutes),
     path('test/', views.testEndPoint, name='test')
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

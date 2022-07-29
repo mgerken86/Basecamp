@@ -8,17 +8,14 @@ from . models import *
   
 class Gear_itemSerializer(serializers.ModelSerializer):
 
+    image_url = serializers.ImageField(required=False)
     class Meta:
         model = Gear_item
-        fields = "__all__"
+        fields = ["id", "name", "desc", "price", "qty"]
+        fields = '__all__'
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    # gear_item = serializers.PrimaryKeyRelatedField(
-    #     many=True, 
-    #     queryset=Gear_item.objects.all(),
-    #     read_only=False
-    #     ),
 
     # This gear_item serializer is for the GET route
     gear_item = Gear_itemSerializer(many=True, read_only=True)

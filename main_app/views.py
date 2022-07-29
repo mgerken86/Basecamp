@@ -20,6 +20,7 @@ import uuid
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from . serializer import *
 from main_app import serializer
 # Create your views here.
@@ -50,6 +51,7 @@ from main_app import serializer
 class Gear_itemList(APIView):
     
     serializer_class = Gear_itemSerializer
+    # parser_classes = (MultiPartParser, FormParser)
   
     def get(self, request):
         detail = [ {
@@ -57,7 +59,8 @@ class Gear_itemList(APIView):
             "name": detail.name,
             "desc": detail.desc,
             "price": detail.price,
-            "qty": detail.qty
+            "qty": detail.qty,
+            # "image_url": detail.image_url
             } 
         for detail in Gear_item.objects.all()]
         return Response(detail)
@@ -70,6 +73,9 @@ class Gear_itemList(APIView):
 
 
 class Gear_itemDetail(APIView):
+
+    # parser_classes = (MultiPartParser, FormParser)
+
     def get_object(self, gear_item_id, format=None):
         return Gear_item.objects.get(id=gear_item_id)
     
