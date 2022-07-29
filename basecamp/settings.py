@@ -2,10 +2,10 @@ from pathlib import Path
 import os
 from datetime import timedelta
 
-
 import environ
 environ.Env()
 environ.Env.read_env()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -159,5 +159,5 @@ SIMPLE_JWT = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
 MEDIA_URL = '/media/'

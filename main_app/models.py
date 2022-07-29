@@ -10,7 +10,7 @@ class Gear_item(models.Model):
     price = models.IntegerField(default=0)
     qty = models.IntegerField(default=0)
     desc = models.TextField(max_length=300)
-    image = models.ImageField(upload_to='gear_item_images')
+    image_url = models.ImageField(upload_to='post_images', default='default.png')
 
     def __str__(self):
         return self.name
