@@ -20,31 +20,27 @@ class ReservationSerializer(serializers.ModelSerializer):
     #     read_only=False
     #     ),
 
+    # This gear_item serializer is for the GET route
     gear_item = Gear_itemSerializer(many=True, read_only=True)
 
+    # This serializer is for POST and PUT routes. The gear_item id is passed to back end for these methods
     gear_item_ids = serializers.PrimaryKeyRelatedField(
         many=True, write_only=True, queryset=Gear_item.objects.all()
     )
-    # gear_item = serializers.RelatedField(many=True, read_only=True)
     class Meta:
         model = Reservation
         fields = ("start_date", "end_date", "gear_item", "qty", "user", "gear_item_ids")
         fields = "__all__"
 
-    # def create(self, validated_data):
-    #     gear_item_data = validated_data.pop('gear_item')
-    #     print("GEAR ITEM DATA: ", gear_item_data)
-    #     reservation = Reservation.objects.create(**validated_data)
-    #     return reservation
 
     def create(self, validated_data):
         gear_items = validated_data.pop("gear_item_ids", None)
-        print('GEAR ITEMS AFTER POP: ', gear_items)
+        # print('GEAR ITEMS AFTER POP: ', gear_items)
         # validated_data["user"] = self.context["request"].user
         reservation = Reservation.objects.create(**validated_data)
         if gear_items:
             reservation.gear_item.set(gear_items)
-            print('RESERVATION GEAR ITEM: ',reservation.gear_item)
+            # print('RESERVATION GEAR ITEM: ',reservation.gear_item)
 
         return reservation 
     
@@ -53,25 +49,13 @@ class ReservationSerializer(serializers.ModelSerializer):
         reservation.end_date = validated_data.get('end_date', reservation.end_date)
         reservation.qty = validated_data.get('qty', reservation.qty)
         gear_items = validated_data.pop("gear_item_ids", None)
-        print('GEAR ITEMS AFTER POP: ', gear_items)
+        # print('GEAR ITEMS AFTER POP: ', gear_items)
         reservation.gear_item.set(gear_items)
-        print('GEAR ITEMS: ', gear_items)
-        print('RESERVATION GEAR ITEM: ', reservation.gear_item)
-        # if gear_items:
-        #     reservation.gear_item.set(gear_items)
-        # reservation.gear_item = validated_data.get('gear_item', reservation.gear_item)
+        # print('GEAR ITEMS: ', gear_items)
+        # print('RESERVATION GEAR ITEM: ', reservation.gear_item)
 
         reservation.save()
         return reservation
-        # gear_items = reservation.gear_items.pop("gear_item_ids", None)
-        # # validated_data["user"] = self.context["request"].user
-        # # reservation = Reservation.objects.create(**validated_data)
-        # if gear_items:
-        #     self.gear_item.set(gear_items)
-
-        return reservation 
-
-
 
 
 
