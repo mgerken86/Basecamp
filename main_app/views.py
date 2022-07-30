@@ -60,7 +60,7 @@ class Gear_itemList(APIView):
             "desc": detail.desc,
             "price": detail.price,
             "qty": detail.qty,
-            # "image_url": detail.image_url
+            "image_url": detail.image_url
             } 
         for detail in Gear_item.objects.all()]
         return Response(detail)

@@ -11,8 +11,8 @@ class Gear_itemSerializer(serializers.ModelSerializer):
     # image_url = serializers.ImageField(required=False)
     class Meta:
         model = Gear_item
-        fields = ["id", "name", "desc", "price", "qty", 'image_url']
-        # fields = '__all__'
+        # fields = ["id", "name", "desc", "price", "qty", 'image_url']
+        fields = '__all__'
 
 
 class ReservationSerializer(serializers.ModelSerializer):
