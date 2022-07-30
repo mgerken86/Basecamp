@@ -1,4 +1,4 @@
-# from tkinter import CASCADE
+
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -10,6 +10,7 @@ class Gear_item(models.Model):
     price = models.IntegerField(default=0)
     qty = models.IntegerField(default=0)
     desc = models.TextField(max_length=300)
+    image_url = models.CharField(max_length=500, default='https://a-lodge.com/wp-content/uploads/A-Lodge_No_Location_Grey-1200x221.png')
     # image_url = models.ImageField(upload_to='post_images')
 
     def __str__(self):
