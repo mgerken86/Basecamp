@@ -86,6 +86,7 @@ class Gear_itemDetail(APIView):
 
     def put(self, request, gear_item_id, format=None):
         gear_item = self.get_object(gear_item_id)
+        print(gear_item)
         serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
