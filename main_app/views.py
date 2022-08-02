@@ -129,10 +129,10 @@ class Reservation_itemDetail(APIView):
 
 
     def put(self, request, reservation_id, format=None):
-        # print("SELF: ", self)
+        print("SELF: ", self)
         reservation = self.get_object(reservation_id)
         serializer = ReservationSerializer(reservation, data=request.data)
-        # print(request.data)
+        print(request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
