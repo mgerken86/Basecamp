@@ -8,7 +8,6 @@ from . models import *
   
 class Gear_itemSerializer(serializers.ModelSerializer):
 
-    # image_url = serializers.ImageField(required=False)
     class Meta:
         model = Gear_item
         # fields = ["id", "name", "desc", "price", "qty", 'image_url']
@@ -61,9 +60,35 @@ class UserSerializer(serializers.ModelSerializer):
         many=True,
         queryset=Reservation.objects.all()
     )
+    comments = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Comment.objects.all()
+    )
+    posts = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Post.objects.all()
+    )
     class Meta:
         model = User
-        fields = ['id', 'username', 'reservations']
+        fields = ['id', 'username', 'reservations', 'posts', 'comments']
+
+
+class TopicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = '__all__'
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = '__all__'
 
 
 # SERIALIZERS FOR AUTH
