@@ -19,23 +19,7 @@ class Gear_item(models.Model):
     def get_absolute_url(self):
         return reverse('detail', kwargs={'gear_item_id': self.id})
 
-class Photo(models.Model):
-    url = models.CharField(max_length=200)
-    gear_item = models.ForeignKey(Gear_item, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Photo for gear_item_id: {self.gear_item_id} @{self.url}"
     
-
-# class Reservation(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     total = models.DecimalField(decimal_places=2, max_digits=20, default=0.00)
-
-# class Reservation_item(models.Model):
-#     start_date = models.DateField(("Start Date"), default=date.today),
-#     end_date = models.DateField(("Return Date"), default=date.today),
-#     gear_item = models.ManyToManyField(Gear_item),
-#     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
 
 class Reservation(models.Model):
     start_date = models.DateField(("Start Date"), default=date.today)
@@ -52,5 +36,25 @@ class Reservation(models.Model):
 
     def get_absolute_url(self):
         return reverse('reservation_detail', kwargs={'reservation_id': self.id})
+
+
+# class Message_Board(models.Model):
+#     topics = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+class Topic(models.Model):
+    name = models.CharField(max_length=100)
+
+class Post(models.Model):
+    subject = models.CharField(max_length=200)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    body = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
 

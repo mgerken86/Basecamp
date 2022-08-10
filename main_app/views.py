@@ -2,7 +2,7 @@ from functools import partial
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth import login
-from .models import Gear_item, Reservation, Photo
+from .models import Gear_item, Reservation, Topic, Post, Comment
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
 from django.contrib.auth.models import User
