@@ -80,6 +80,10 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
+    comments = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Comment.objects.all()
+    )
     class Meta:
         model = Post
         fields = '__all__'

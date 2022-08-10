@@ -130,7 +130,20 @@ class UserReservationIndex(APIView):
         return Response(serializer.data)
 
 
+class TopicList(APIView):
+    
+    serializer_class = TopicSerializer
+    # parser_classes = (MultiPartParser, FormParser)
+  
+    def get(self, request, format=None):
+        topics = Topic.objects.all()
+        return Response(topics)
 
+    def post(self, request):
+        serializer = TopicSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
 
 
 # AUTH VIEWS 
