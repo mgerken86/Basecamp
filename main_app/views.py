@@ -2,16 +2,11 @@ from functools import partial
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from .models import Gear_item, Reservation, Photo
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .forms import ReservationForm
 import requests
 import json
 import boto3
