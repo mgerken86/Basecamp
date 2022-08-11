@@ -45,11 +45,14 @@ class Topic(models.Model):
     name = models.CharField(max_length=100)
 
 class Post(models.Model):
-    subject = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['created_at']
 
 class Comment(models.Model):
     body = models.TextField()
