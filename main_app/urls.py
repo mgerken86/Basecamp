@@ -15,6 +15,8 @@ urlpatterns = [
     path('topics/', TopicList.as_view()),
     path('posts/', PostList.as_view()),
     path('posts/<int:pk>/', views.PostDetail.as_view()),
+    path('comments/', views.CommentList.as_view()),
+    path('comments/<int:pk>/', views.CommentDetail.as_view()),
     path('comments/', CommentList.as_view()),
     path('myaccount/<int:user_id>', views.UserReservationIndex.as_view()),
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -176,14 +176,14 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
-    serializer_class = serializers.CommentSerializer
+    serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
-    serializer_class = serializers.CommentSerializer
+    serializer_class = CommentSerializer
 
 
 

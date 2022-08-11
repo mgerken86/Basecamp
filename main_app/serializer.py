@@ -85,13 +85,13 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'title', 'body', 'user', 'comments']
 
 class CommentSerializer(serializers.ModelSerializer):
 
     user = serializers.ReadOnlyField(source='user.username')
     class Meta:
-        model = Post
+        model = Comment
         fields = ['id', 'body', 'user', 'post']
 
 
