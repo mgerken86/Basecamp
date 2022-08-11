@@ -66,7 +66,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     posts = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Post.objects.all()
+        read_only=True
     )
     class Meta:
         model = User
@@ -80,16 +80,19 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    comments = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Comment.objects.all()
-    )
+    user = serializers.ReadOnlyField(source='user.username')
+
+    # comments = serializers.PrimaryKeyRelatedField(
+    #     many=True,
+    #     queryset=Comment.objects.all()
+    # )
     class Meta:
         model = Post
         fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):
 
+    user = serializers.ReadOnlyField(source='user.username')
     class Meta:
         model = Post
         fields = '__all__'

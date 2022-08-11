@@ -145,6 +145,50 @@ class TopicList(APIView):
             serializer.save()
             return  Response(serializer.data)
 
+# class PostList(APIView):
+    
+#     serializer_class = PostSerializer
+#     # parser_classes = (MultiPartParser, FormParser)
+  
+#     def get(self, request, format=None):
+#         posts = Post.objects.all()
+#         return Response(posts)
+
+#     def post(self, request):
+#         serializer = PostSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return  Response(serializer.data)
+
+
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+
+class CommentList(APIView):
+    
+    serializer_class = CommentSerializer
+    # parser_classes = (MultiPartParser, FormParser)
+  
+    def get(self, request, format=None):
+        comments = Comment.objects.all()
+        return Response(comments)
+
+    def post(self, request):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
+
 
 # AUTH VIEWS 
 class MyTokenObtainPairView(TokenObtainPairView):
