@@ -174,20 +174,17 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-class CommentList(APIView):
-    
-    serializer_class = CommentSerializer
-    # parser_classes = (MultiPartParser, FormParser)
-  
-    def get(self, request, format=None):
-        comments = Comment.objects.all()
-        return Response(comments)
+class CommentList(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
 
-    def post(self, request):
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return  Response(serializer.data)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
+
 
 
 # AUTH VIEWS 

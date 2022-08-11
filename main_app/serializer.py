@@ -62,7 +62,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     comments = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Comment.objects.all()
+        read_only=True
     )
     posts = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -81,6 +81,7 @@ class TopicSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     user = serializers.ReadOnlyField(source='user.username')
+    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Post
@@ -91,7 +92,7 @@ class CommentSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'body', 'user', 'post']
 
 
 # SERIALIZERS FOR AUTH
