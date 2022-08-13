@@ -130,20 +130,28 @@ class UserReservationIndex(APIView):
         return Response(serializer.data)
 
 
-class TopicList(APIView):
+# class TopicList(APIView):
     
-    serializer_class = TopicSerializer
-    # parser_classes = (MultiPartParser, FormParser)
+#     serializer_class = TopicSerializer
+#     # parser_classes = (MultiPartParser, FormParser)
   
-    def get(self, request, format=None):
-        topics = Topic.objects.all()
-        return Response(topics)
+#     def get(self, request, format=None):
+#         topics = Topic.objects.all()
+#         return Response(topics)
 
-    def post(self, request):
-        serializer = TopicSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return  Response(serializer.data)
+#     def post(self, request):
+#         serializer = TopicSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return  Response(serializer.data)
+
+class TopicList(generics.ListCreateAPIView):
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+        # serializer.save()
 
 # class PostList(APIView):
     
@@ -167,6 +175,7 @@ class PostList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        # serializer.save()
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()

@@ -81,12 +81,13 @@ class TopicSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     user = serializers.ReadOnlyField(source='user.username')
-    topic = serializers.ReadOnlyField(source='topic.name')
-    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # topic = serializers.ReadOnlyField(source='topic.name')
+    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'body', 'user', 'comments', 'topic']
+        # fields = ['id', 'title', 'body', 'user', 'comments', 'topic']
+        fields = ['id', 'title', 'body', 'user']
 
 class CommentSerializer(serializers.ModelSerializer):
 
