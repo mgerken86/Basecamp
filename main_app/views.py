@@ -173,9 +173,14 @@ class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-        # serializer.save()
+    def post(self, request):
+
+        serializer = PostSerializer(data=request.data, partial=True)
+        print(serializer)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
