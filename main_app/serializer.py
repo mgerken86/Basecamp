@@ -80,10 +80,10 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    user = serializers.ReadOnlyField(source='user.username')
-    topic_ids = serializers.PrimaryKeyRelatedField(
-        many=True, write_only=True, queryset=Gear_item.objects.all()
-    )
+    # user = serializers.ReadOnlyField(source='user.username')
+    # topic_ids = serializers.PrimaryKeyRelatedField(
+    #     many=True, write_only=True, queryset=Topic.objects.all()
+    # )
     # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
 
     class Meta:
@@ -92,14 +92,14 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'body', 'user']
         fields = '__all__'
 
-    def create(self, validated_data):
-        topic = validated_data.pop("topic_ids", None)
-        post = Post.objects.create(**validated_data)
-        if topic:
-            post.topic.set(topic)
+    # def create(self, validated_data):
+        # topic = validated_data.pop("topic_ids", None)
+        # post = Post.objects.create(**validated_data)
+        # if topic:
+            # post.topic.set(topic)
             # print('RESERVATION GEAR ITEM: ',reservation.gear_item)
 
-        return post 
+        # return post 
 
 class CommentSerializer(serializers.ModelSerializer):
 

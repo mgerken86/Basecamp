@@ -169,12 +169,11 @@ class TopicList(generics.ListCreateAPIView):
 #             return  Response(serializer.data)
 
 
-class PostList(generics.ListCreateAPIView):
+class PostList(APIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
     def post(self, request):
-
         serializer = PostSerializer(data=request.data, partial=True)
         print(serializer)
 
@@ -195,9 +194,33 @@ class CommentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+class CommentDetail(APIView):
+    def get_object(self, comment_id, format=None):
+        return Comment.objects.get(id=comment_id)
+
+    def get(self, request, comment_id, format=None):
+        print('IN THE VIEW')
+        comment = self.get_object(comment_id)
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
+
+
+    # def put(self, request, reservation_id, format=None):
+    #     print("SELF: ", self)
+    #     reservation = self.get_object(reservation_id)
+    #     serializer = ReservationSerializer(reservation, data=request.data)
+    #     print(request.data)
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response('reservation was updated')
+
+    # def delete(self, request, reservation_id, format=None):
+    #     print("THIS IS THE DELETE ID", reservation_id)
+    #     reservation = self.get_object(reservation_id)
+    #     print("THIS IS THE RESERVATION", reservation)
+    #     reservation.delete()
+    #     return Response('gear item is deleted')
 
 
 
