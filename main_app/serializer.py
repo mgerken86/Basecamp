@@ -80,7 +80,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    # user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.ReadOnlyField(source='user.username')
     # topic_ids = serializers.PrimaryKeyRelatedField(
     #     many=True, write_only=True, queryset=Topic.objects.all()
     # )

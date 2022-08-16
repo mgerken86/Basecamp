@@ -153,33 +153,24 @@ class TopicList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
         # serializer.save()
 
-# class PostList(APIView):
+class PostIndex(APIView):
     
-#     serializer_class = PostSerializer
-#     # parser_classes = (MultiPartParser, FormParser)
-  
-#     def get(self, request, format=None):
-#         posts = Post.objects.all()
-#         return Response(posts)
-
-#     def post(self, request):
-#         serializer = PostSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return  Response(serializer.data)
-
-
-class PostList(APIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
+    # parser_classes = (MultiPartParser, FormParser)
+  
+    def get(self, request, format=None):
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = PostSerializer(data=request.data, partial=True)
-        print(serializer)
-
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return  Response(serializer.data)
+
+
+
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
@@ -187,12 +178,20 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-class CommentList(generics.ListCreateAPIView):
-    queryset = Comment.objects.all()
+# class CommentIndex(generics.ListCreateAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+
+class CommentIndex(APIView):
     serializer_class = CommentSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def get(self, request, format=None):
+        comments = Comment.objects.all()
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
 class CommentDetail(APIView):
     def get_object(self, comment_id, format=None):
