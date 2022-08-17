@@ -75,13 +75,14 @@ class UserSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
 
     this_user = serializers.ReadOnlyField(source='user.username')
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), many=False, write_only=True)
     class Meta:
         model = Comment
         # fields = ['id', 'body', 'user', 'post']
         fields = '__all__'
 
     def create(self, validated_data):
-        post = validated_data.pop("post_id", None)
+        post = validated_data.pop("post", None)
         comment = Comment.objects.create(**validated_data)
         if post:
             comment.post.set(post)
