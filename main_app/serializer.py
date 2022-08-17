@@ -71,6 +71,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'reservations', 'posts', 'comments']
 
 
+class CommentSerializer(serializers.ModelSerializer):
+
+    user = serializers.ReadOnlyField(source='user.username')
+    class Meta:
+        model = Comment
+        fields = ['id', 'body', 'user', 'post']
+
+
+
+
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
@@ -81,7 +91,8 @@ class PostSerializer(serializers.ModelSerializer):
     this_user = serializers.ReadOnlyField(source='user.username')
     this_topic = serializers.ReadOnlyField(source='topic.name')
 
-    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
+    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
+    comments = CommentSerializer(many=True)
 
     class Meta:
         model = Post
@@ -92,12 +103,12 @@ class PostSerializer(serializers.ModelSerializer):
         post = Post.objects.create(**validated_data)
         return post 
 
-class CommentSerializer(serializers.ModelSerializer):
-
-    user = serializers.ReadOnlyField(source='user.username')
-    class Meta:
-        model = Comment
-        fields = ['id', 'body', 'user', 'post']
+    def update(self, validated_data):
+        comments_data = validated_data.pop('comment')
+        post =Post.objects.update(**validated_data)
+        for comment_data in comments_data:
+            Comment.objects.create(post=post, **comment_data)
+        return post
 
 
 # SERIALIZERS FOR AUTH

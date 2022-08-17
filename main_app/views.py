@@ -160,6 +160,7 @@ class PostIndex(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        print('self: ', self, 'request', request)
         serializer = PostSerializer(data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
