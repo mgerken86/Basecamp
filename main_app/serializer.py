@@ -78,25 +78,18 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    # user = serializers.ReadOnlyField(source='user.username')
-    topic = TopicSerializer(read_only=True)
+    this_user = serializers.ReadOnlyField(source='user.username')
+    this_topic = serializers.ReadOnlyField(source='topic.name')
+
     comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
-    topic_id = serializers.PrimaryKeyRelatedField(
-        many=True, write_only=True, queryset=Topic.objects.all()
-    )
-    
+
     class Meta:
         model = Post
-        # fields = ['id', 'title', 'body', 'user', 'comments', 'topic']
-        fields = ['id', 'title', 'body', 'user']
         fields = '__all__'
 
     def create(self, validated_data):
         print('data: ', validated_data)
-        topic = validated_data.pop("topic_id", None)
         post = Post.objects.create(**validated_data)
-        if topic:
-            post.topic.set(topic)
         return post 
 
 class CommentSerializer(serializers.ModelSerializer):
