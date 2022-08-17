@@ -7,7 +7,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from . models import *
   
 class Gear_itemSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Gear_item
         # fields = ["id", "name", "desc", "price", "qty", 'image_url']
@@ -73,20 +72,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
     this_user = serializers.ReadOnlyField(source='user.username')
+    this_post = serializers.ReadOnlyField(source='post.id')
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), many=False, write_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=True)
     class Meta:
         model = Comment
-        # fields = ['id', 'body', 'user', 'post']
         fields = '__all__'
 
     def create(self, validated_data):
-        post = validated_data.pop("post", None)
         comment = Comment.objects.create(**validated_data)
-        if post:
-            comment.post.set(post)
         return comment
+
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -94,8 +91,9 @@ class TopicSerializer(serializers.ModelSerializer):
         model = Topic
         fields = '__all__'
 
-class PostSerializer(serializers.ModelSerializer):
 
+
+class PostSerializer(serializers.ModelSerializer):
     this_user = serializers.ReadOnlyField(source='user.username')
     this_topic = serializers.ReadOnlyField(source='topic.name')
     topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), many=False, write_only=True)
