@@ -38,9 +38,6 @@ class Reservation(models.Model):
         return reverse('reservation_detail', kwargs={'reservation_id': self.id})
 
 
-# class Message_Board(models.Model):
-#     topics = models.ForeignKey(Topic, on_delete=models.CASCADE)
-
 class Topic(models.Model):
     name = models.CharField(max_length=100)
 

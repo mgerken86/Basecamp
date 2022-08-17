@@ -82,10 +82,7 @@ class ReservationIndex(APIView):
         return Response(serializer.data)
   
     def post(self, request):
-
         serializer = ReservationSerializer(data=request.data, partial=True)
-        print(serializer)
-
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return  Response(serializer.data)
@@ -156,7 +153,6 @@ class TopicList(generics.ListCreateAPIView):
 class PostIndex(APIView):
     
     serializer_class = PostSerializer
-    # parser_classes = (MultiPartParser, FormParser)
   
     def get(self, request, format=None):
         posts = Post.objects.all()

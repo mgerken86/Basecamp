@@ -36,8 +36,6 @@ class ReservationSerializer(serializers.ModelSerializer):
         reservation = Reservation.objects.create(**validated_data)
         if gear_items:
             reservation.gear_item.set(gear_items)
-            # print('RESERVATION GEAR ITEM: ',reservation.gear_item)
-
         return reservation 
     
     def update(self, reservation, validated_data):
@@ -80,26 +78,26 @@ class TopicSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    user = serializers.ReadOnlyField(source='user.username')
-    # topic_ids = serializers.PrimaryKeyRelatedField(
-    #     many=True, write_only=True, queryset=Topic.objects.all()
-    # )
-    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
-
+    # user = serializers.ReadOnlyField(source='user.username')
+    topic = TopicSerializer(read_only=True)
+    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
+    topic_id = serializers.PrimaryKeyRelatedField(
+        many=True, write_only=True, queryset=Topic.objects.all()
+    )
+    
     class Meta:
         model = Post
         # fields = ['id', 'title', 'body', 'user', 'comments', 'topic']
         fields = ['id', 'title', 'body', 'user']
         fields = '__all__'
 
-    # def create(self, validated_data):
-        # topic = validated_data.pop("topic_ids", None)
-        # post = Post.objects.create(**validated_data)
-        # if topic:
-            # post.topic.set(topic)
-            # print('RESERVATION GEAR ITEM: ',reservation.gear_item)
-
-        # return post 
+    def create(self, validated_data):
+        print('data: ', validated_data)
+        topic = validated_data.pop("topic_id", None)
+        post = Post.objects.create(**validated_data)
+        if topic:
+            post.topic.set(topic)
+        return post 
 
 class CommentSerializer(serializers.ModelSerializer):
 
