@@ -30,6 +30,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        print('self: ', self, 'data: ', validated_data)
         gear_items = validated_data.pop("gear_item_ids", None)
         # print('GEAR ITEMS AFTER POP: ', gear_items)
         # validated_data["user"] = self.context["request"].user
@@ -90,22 +91,24 @@ class PostSerializer(serializers.ModelSerializer):
 
     this_user = serializers.ReadOnlyField(source='user.username')
     this_topic = serializers.ReadOnlyField(source='topic.name')
+    topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), many=False, write_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=True)
 
-    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=None)
-    comments = CommentSerializer(many=True)
+    # comments = CommentSerializer(many=True)
 
     class Meta:
         model = Post
         fields = '__all__'
 
     def create(self, validated_data):
-        print('data: ', validated_data)
+        print('data: ', validated_data, self)
         post = Post.objects.create(**validated_data)
         return post 
 
-    def update(self, validated_data):
+    def update(self, post, validated_data):
         comments_data = validated_data.pop('comment')
-        post =Post.objects.update(**validated_data)
+        post.title = validated_data.get('title', post.title)
+        post.body = validated_data.get('body', post.body)
         for comment_data in comments_data:
             Comment.objects.create(post=post, **comment_data)
         return post

@@ -17,32 +17,31 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from . serializer import *
-from main_app import serializer
 
 
-  
+
 class Gear_itemList(APIView):
-    
+
     serializer_class = Gear_itemSerializer
     # parser_classes = (MultiPartParser, FormParser)
-  
+
     def get(self, request):
-        detail = [ {
+        detail = [{
             "id": detail.id,
             "name": detail.name,
             "desc": detail.desc,
             "price": detail.price,
             "qty": detail.qty,
             "image_url": detail.image_url
-            } 
-        for detail in Gear_item.objects.all()]
+        }
+            for detail in Gear_item.objects.all()]
         return Response(detail)
-  
+
     def post(self, request):
         serializer = Gear_itemSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return  Response(serializer.data)
+            return Response(serializer.data)
 
 
 class Gear_itemDetail(APIView):
@@ -51,7 +50,7 @@ class Gear_itemDetail(APIView):
 
     def get_object(self, gear_item_id, format=None):
         return Gear_item.objects.get(id=gear_item_id)
-    
+
     def get(self, request, gear_item_id, format=None):
         gear_item = self.get_object(gear_item_id)
         serializer = Gear_itemSerializer(gear_item)
@@ -60,7 +59,8 @@ class Gear_itemDetail(APIView):
     def put(self, request, gear_item_id, format=None):
         gear_item = self.get_object(gear_item_id)
         print(gear_item)
-        serializer = Gear_itemSerializer(gear_item, data=request.data, partial=True)
+        serializer = Gear_itemSerializer(
+            gear_item, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
@@ -73,19 +73,20 @@ class Gear_itemDetail(APIView):
 
 
 class ReservationIndex(APIView):
-    
+
     serializer_class = ReservationSerializer
 
     def get(self, request, format=None):
         reservations = Reservation.objects.all()
         serializer = ReservationSerializer(reservations, many=True)
         return Response(serializer.data)
-  
+
     def post(self, request):
         serializer = ReservationSerializer(data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return  Response(serializer.data)
+            return Response(serializer.data)
+
 
 class Reservation_itemDetail(APIView):
     def get_object(self, reservation_id, format=None):
@@ -96,7 +97,6 @@ class Reservation_itemDetail(APIView):
         reservation = self.get_object(reservation_id)
         serializer = ReservationSerializer(reservation)
         return Response(serializer.data)
-
 
     def put(self, request, reservation_id, format=None):
         print("SELF: ", self)
@@ -116,22 +116,21 @@ class Reservation_itemDetail(APIView):
         return Response('gear item is deleted')
 
 
-
 class UserReservationIndex(APIView):
-    
+
     serializer_class = UserSerializer
 
     def get(self, request, user_id, format=None):
-        reservations = Reservation.objects.filter(user = user_id)
+        reservations = Reservation.objects.filter(user=user_id)
         serializer = ReservationSerializer(reservations, many=True)
         return Response(serializer.data)
 
 
 # class TopicList(APIView):
-    
+
 #     serializer_class = TopicSerializer
 #     # parser_classes = (MultiPartParser, FormParser)
-  
+
 #     def get(self, request, format=None):
 #         topics = Topic.objects.all()
 #         return Response(topics)
@@ -150,29 +149,29 @@ class TopicList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
         # serializer.save()
 
+
 class PostIndex(APIView):
-    
+
     serializer_class = PostSerializer
-  
+
     def get(self, request, format=None):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        print('self: ', self, 'request', request)
         serializer = PostSerializer(data=request.data, partial=True)
+        # print(serializer)
         if serializer.is_valid(raise_exception=True):
+            print('valid')
             serializer.save()
-            return  Response(serializer.data)
-
-
+            return Response(serializer.data)
+        print(serializer.errors)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
 
 
 # class CommentIndex(generics.ListCreateAPIView):
@@ -190,6 +189,7 @@ class CommentIndex(APIView):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+
 class CommentDetail(APIView):
     def get_object(self, comment_id, format=None):
         return Comment.objects.get(id=comment_id)
@@ -199,7 +199,6 @@ class CommentDetail(APIView):
         comment = self.get_object(comment_id)
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
-
 
     # def put(self, request, reservation_id, format=None):
     #     print("SELF: ", self)
@@ -219,10 +218,10 @@ class CommentDetail(APIView):
     #     return Response('gear item is deleted')
 
 
-
-# AUTH VIEWS 
+# AUTH VIEWS
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -239,6 +238,7 @@ def getRoutes(request):
     ]
     return Response(routes)
 
+
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def testEndPoint(request):
@@ -250,4 +250,3 @@ def testEndPoint(request):
         data = f'Congratulation your API just responded to POST request with text: {text}'
         return Response({'response': data}, status=status.HTTP_200_OK)
     return Response({}, status.HTTP_400_BAD_REQUEST)
-
