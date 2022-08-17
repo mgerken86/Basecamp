@@ -189,6 +189,12 @@ class CommentIndex(APIView):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+    def post(self, request):
+        serializer = CommentSerializer(data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
 
 class CommentDetail(APIView):
     def get_object(self, comment_id, format=None):

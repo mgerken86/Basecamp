@@ -74,12 +74,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    user = serializers.ReadOnlyField(source='user.username')
+    this_user = serializers.ReadOnlyField(source='user.username')
     class Meta:
         model = Comment
-        fields = ['id', 'body', 'user', 'post']
+        # fields = ['id', 'body', 'user', 'post']
+        fields = '__all__'
 
-
+    def create(self, validated_data):
+        post = validated_data.pop("post_id", None)
+        comment = Comment.objects.create(**validated_data)
+        if post:
+            comment.post.set(post)
+        return comment
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -94,7 +100,7 @@ class PostSerializer(serializers.ModelSerializer):
     topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), many=False, write_only=True)
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=True)
 
-    # comments = CommentSerializer(many=True)
+    comments = serializers.PrimaryKeyRelatedField(queryset=Comment.objects.all(), many=True)
 
     class Meta:
         model = Post
