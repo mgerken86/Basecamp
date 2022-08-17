@@ -99,7 +99,7 @@ class PostSerializer(serializers.ModelSerializer):
     topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), many=False, write_only=True)
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=True)
 
-    comments = serializers.PrimaryKeyRelatedField(queryset=Comment.objects.all(), many=True)
+    # comments = serializers.PrimaryKeyRelatedField(queryset=Comment.objects.all(), many=True)
 
     class Meta:
         model = Post
