@@ -21,7 +21,6 @@ from . serializer import *
 
 
 class Gear_itemList(APIView):
-
     serializer_class = Gear_itemSerializer
     # parser_classes = (MultiPartParser, FormParser)
 
@@ -45,7 +44,6 @@ class Gear_itemList(APIView):
 
 
 class Gear_itemDetail(APIView):
-
     # parser_classes = (MultiPartParser, FormParser)
 
     def get_object(self, gear_item_id, format=None):
@@ -73,7 +71,6 @@ class Gear_itemDetail(APIView):
 
 
 class ReservationIndex(APIView):
-
     serializer_class = ReservationSerializer
 
     def get(self, request, format=None):
@@ -93,31 +90,25 @@ class Reservation_itemDetail(APIView):
         return Reservation.objects.get(id=reservation_id)
 
     def get(self, request, reservation_id, format=None):
-        print('IN THE VIEW')
         reservation = self.get_object(reservation_id)
         serializer = ReservationSerializer(reservation)
         return Response(serializer.data)
 
     def put(self, request, reservation_id, format=None):
-        print("SELF: ", self)
         reservation = self.get_object(reservation_id)
         serializer = ReservationSerializer(reservation, data=request.data)
-        print(request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
         return Response('reservation was updated')
 
     def delete(self, request, reservation_id, format=None):
-        print("THIS IS THE DELETE ID", reservation_id)
         reservation = self.get_object(reservation_id)
-        print("THIS IS THE RESERVATION", reservation)
         reservation.delete()
-        return Response('gear item is deleted')
+        return Response('reservation is deleted')
 
 
 class UserReservationIndex(APIView):
-
     serializer_class = UserSerializer
 
     def get(self, request, user_id, format=None):
@@ -125,33 +116,16 @@ class UserReservationIndex(APIView):
         serializer = ReservationSerializer(reservations, many=True)
         return Response(serializer.data)
 
-
-# class TopicList(APIView):
-
-#     serializer_class = TopicSerializer
-#     # parser_classes = (MultiPartParser, FormParser)
-
-#     def get(self, request, format=None):
-#         topics = Topic.objects.all()
-#         return Response(topics)
-
-#     def post(self, request):
-#         serializer = TopicSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return  Response(serializer.data)
-
 class TopicList(generics.ListCreateAPIView):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        # serializer.save()
+        serializer.save()
 
 
 class PostIndex(APIView):
-
     serializer_class = PostSerializer
 
     def get(self, request, format=None):
@@ -161,25 +135,33 @@ class PostIndex(APIView):
 
     def post(self, request):
         serializer = PostSerializer(data=request.data, partial=True)
-        # print(serializer)
         if serializer.is_valid(raise_exception=True):
-            print('valid')
             serializer.save()
             return Response(serializer.data)
         print(serializer.errors)
 
 
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+class Post_itemDetail(APIView):
+    def get_object(self, post_id, format=None):
+        return Post.objects.get(id=post_id)
 
+    def get(self, request, post_id, format=None):
+        post = self.get_object(post_id)
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
 
-# class CommentIndex(generics.ListCreateAPIView):
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
+    def put(self, request, post_id, format=None):
+        post = self.get_object(post_id)
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        return Response('post is updated')
 
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
+    def delete(self, request, post_id, format=None):
+        post = self.get_object(post_id)
+        post.delete()
+        return Response('post is deleted')
 
 class CommentIndex(APIView):
     serializer_class = CommentSerializer

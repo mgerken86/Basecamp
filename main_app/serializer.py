@@ -9,7 +9,6 @@ from . models import *
 class Gear_itemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gear_item
-        # fields = ["id", "name", "desc", "price", "qty", 'image_url']
         fields = '__all__'
 
 
@@ -24,15 +23,12 @@ class ReservationSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Reservation
-        fields = ("start_date", "end_date", "gear_item", "qty", "user", "gear_item_ids")
         fields = "__all__"
 
 
     def create(self, validated_data):
         print('self: ', self, 'data: ', validated_data)
         gear_items = validated_data.pop("gear_item_ids", None)
-        # print('GEAR ITEMS AFTER POP: ', gear_items)
-        # validated_data["user"] = self.context["request"].user
         reservation = Reservation.objects.create(**validated_data)
         if gear_items:
             reservation.gear_item.set(gear_items)
@@ -43,10 +39,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         reservation.end_date = validated_data.get('end_date', reservation.end_date)
         reservation.qty = validated_data.get('qty', reservation.qty)
         gear_items = validated_data.pop("gear_item_ids", None)
-        # print('GEAR ITEMS AFTER POP: ', gear_items)
         reservation.gear_item.set(gear_items)
-        # print('GEAR ITEMS: ', gear_items)
-        # print('RESERVATION GEAR ITEM: ', reservation.gear_item)
 
         reservation.save()
         return reservation
@@ -106,16 +99,12 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        print('data: ', validated_data, self)
         post = Post.objects.create(**validated_data)
         return post 
 
     def update(self, post, validated_data):
-        comments_data = validated_data.pop('comment')
         post.title = validated_data.get('title', post.title)
         post.body = validated_data.get('body', post.body)
-        for comment_data in comments_data:
-            Comment.objects.create(post=post, **comment_data)
         return post
 
 
