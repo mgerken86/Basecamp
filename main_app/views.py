@@ -142,7 +142,7 @@ class PostIndex(APIView):
 
 
 class Post_Detail(APIView):
-    def get_object(self, post_id, format=None):
+    def get_object(self, post_id, format=None, partial=True):
         return Post.objects.get(id=post_id)
 
     def get(self, request, post_id, format=None):
