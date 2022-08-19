@@ -152,10 +152,12 @@ class Post_Detail(APIView):
 
     def put(self, request, post_id, format=None):
         post = self.get_object(post_id)
+        print(post)
         serializer = PostSerializer(post, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+        print('ERRORS: ', serializer.errors)
         return Response('post is updated')
 
     def delete(self, request, post_id, format=None):

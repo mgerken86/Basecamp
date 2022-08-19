@@ -108,6 +108,7 @@ class PostSerializer(serializers.ModelSerializer):
         post.body = validated_data.get('body', post.body)
         post.topic = validated_data.get('topic', post.topic)
         post.user = validated_data.get('user', post.user)
+        post.save()
         return post
 
 
