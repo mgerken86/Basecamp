@@ -89,8 +89,8 @@ class TopicSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     this_user = serializers.ReadOnlyField(source='user.username')
     this_topic = serializers.ReadOnlyField(source='topic.name')
-    topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), many=False, write_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=True)
+    topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), many=False, write_only=False)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=False)
 
     # comments = serializers.PrimaryKeyRelatedField(queryset=Comment.objects.all(), many=True)
 
@@ -103,6 +103,7 @@ class PostSerializer(serializers.ModelSerializer):
         return post 
 
     def update(self, post, validated_data):
+        print('self: ', self, 'post: ', post, 'data: ', validated_data)
         post.title = validated_data.get('title', post.title)
         post.body = validated_data.get('body', post.body)
         return post
