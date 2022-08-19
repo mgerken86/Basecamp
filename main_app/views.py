@@ -141,7 +141,7 @@ class PostIndex(APIView):
         print(serializer.errors)
 
 
-class Post_itemDetail(APIView):
+class Post_Detail(APIView):
     def get_object(self, post_id, format=None):
         return Post.objects.get(id=post_id)
 
