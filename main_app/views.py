@@ -152,7 +152,6 @@ class Post_Detail(APIView):
 
     def put(self, request, post_id, format=None):
         post = self.get_object(post_id)
-        print(post)
         serializer = PostSerializer(post, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
@@ -186,27 +185,23 @@ class CommentDetail(APIView):
         return Comment.objects.get(id=comment_id)
 
     def get(self, request, comment_id, format=None):
-        print('IN THE VIEW')
         comment = self.get_object(comment_id)
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
-    # def put(self, request, reservation_id, format=None):
-    #     print("SELF: ", self)
-    #     reservation = self.get_object(reservation_id)
-    #     serializer = ReservationSerializer(reservation, data=request.data)
-    #     print(request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response('reservation was updated')
+    def put(self, request, commeht_id, format=None):
+        comment = self.get_object(comment_id)
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        print('ERRORS: ', serializer.errors)
+        return Response('comment is updated')
 
-    # def delete(self, request, reservation_id, format=None):
-    #     print("THIS IS THE DELETE ID", reservation_id)
-    #     reservation = self.get_object(reservation_id)
-    #     print("THIS IS THE RESERVATION", reservation)
-    #     reservation.delete()
-    #     return Response('gear item is deleted')
+    def delete(self, request, comment_id, format=None):
+        comment = self.get_object(comment_id)
+        comment.delete()
+        return Response('comment is deleted')
 
 
 # AUTH VIEWS
