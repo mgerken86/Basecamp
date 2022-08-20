@@ -189,9 +189,9 @@ class CommentDetail(APIView):
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
-    def put(self, request, commeht_id, format=None):
+    def put(self, request, comment_id, format=None):
         comment = self.get_object(comment_id)
-        serializer = PostSerializer(post, data=request.data)
+        serializer = CommentSerializer(comment, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)

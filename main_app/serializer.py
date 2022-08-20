@@ -77,12 +77,12 @@ class CommentSerializer(serializers.ModelSerializer):
         comment = Comment.objects.create(**validated_data)
         return comment
 
-    def update(self, post, validated_data):
-        post.title = validated_data.get('title', post.title)
-        post.body = validated_data.get('body', post.body)
-        post.user = validated_data.get('user', post.user)
-        post.save()
-        return post
+    def update(self, comment, validated_data):
+        comment.body = validated_data.get('body', comment.body)
+        comment.user = validated_data.get('user', comment.user)
+        comment.post = validated_data.get('post', comment.post)
+        comment.save()
+        return comment
 
 
 
