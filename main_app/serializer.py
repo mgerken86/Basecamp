@@ -68,7 +68,7 @@ class CommentSerializer(serializers.ModelSerializer):
     this_user = serializers.ReadOnlyField(source='user.username')
     this_post = serializers.ReadOnlyField(source='post.id')
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), many=False, write_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False, write_only=False)
     class Meta:
         model = Comment
         fields = '__all__'
