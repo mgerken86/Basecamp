@@ -12,10 +12,10 @@ class TestExample(TestCase):
         self.assertEqual(add_two_numbers(2, 2), 4)
 
 class ModelsTestCase(TestCase):
-    def post_has_author(self):
+    def test_post_has_author(self):
         """Posts have author when created"""
         post = Post.objects.create(title="Test Post")
         post.author = "John Doe"
         post.body = "Testing this post"
         post.save()
-        
+        self.assertTrue(hasattr(post, 'author'))
