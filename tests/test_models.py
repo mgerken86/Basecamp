@@ -13,9 +13,11 @@ class TestExample(TestCase):
 
 class ModelsTestCase(TestCase):
     def test_post_has_author(self):
-        """Posts have author when created"""
-        post = Post.objects.create(title="Test Post")
-        post.author = "John Doe"
-        post.body = "Testing this post"
-        post.save()
-        self.assertTrue(hasattr(post, 'author'))
+        """Posts have user when created"""
+        post = Post.objects.create(
+            title="Test Post", 
+            body="Testing",
+            user=User,
+            topic=Topic
+            )
+        self.assertTrue(hasattr(post, 'title'))
